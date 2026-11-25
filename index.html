@@ -1,0 +1,2593 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divya Agro Farms | Farm-Fresh Pork, Breeding Stock & Agro Products</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS v2 Client CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    },
+                    colors: {
+                        farm: {
+                            50: '#f2f8f4',
+                            100: '#e0efe5',
+                            200: '#c2dfcc',
+                            600: '#2d6a4f',
+                            700: '#1b4332',
+                            800: '#143326',
+                            900: '#0d2219',
+                        },
+                        earth: {
+                            50: '#fdf8f3',
+                            100: '#faeee0',
+                            500: '#c26d2d',
+                            600: '#a3541c',
+                            700: '#824014',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-stone-50 text-stone-800 font-sans antialiased selection:bg-farm-200 selection:text-farm-900 overflow-x-hidden">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-farm-900 text-farm-50 text-xs sm:text-sm py-2.5 px-4 text-center">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+            <span class="font-medium">Fresh Farm-to-Door Cold-Chain Delivery across Bengaluru &amp; Karnataka</span>
+            <span class="hidden sm:inline text-farm-200">•</span>
+            <span class="text-amber-300 font-semibold">Free Delivery on orders above ₹1,000</span>
+        </div>
+    </div>
+
+    <!-- Sticky Header & Navigation -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20 gap-4">
+                
+                <!-- Brand Logo -->
+                <a href="#home" class="flex items-center gap-3 group shrink-0">
+                    <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-farm-700 text-white flex items-center justify-center shadow-md group-hover:bg-farm-600 transition-colors">
+                        <!-- Custom Farm Emblem SVG -->
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5"/>
+                            <path d="M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="block text-lg sm:text-xl font-extrabold tracking-tight text-farm-900 leading-none">Divya Agro Farms</span>
+                        <span class="block text-[11px] sm:text-xs font-medium text-earth-600 tracking-wide uppercase mt-0.5">Scientific Piggery &amp; Fresh Meats</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-stone-600">
+                    <a href="#shop" class="hover:text-farm-700 transition-colors">Shop Products</a>
+                    <a href="#livestock" onclick="filterByCategory('livestock')" class="hover:text-farm-700 transition-colors">Breeding Stock</a>
+                    <a href="#standards" class="hover:text-farm-700 transition-colors">Bio-Security</a>
+                    <a href="#bulk-inquiry" class="hover:text-farm-700 transition-colors">Bulk / B2B</a>
+                    <a href="#contact" class="hover:text-farm-700 transition-colors">Contact</a>
+                </nav>
+
+                <!-- Search & Cart Action Buttons -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <!-- Quick Search Trigger (Desktop) -->
+                    <div class="hidden md:flex items-center relative">
+                        <input
+                            type="text"
+                            id="headerSearchInput"
+                            placeholder="Search cuts, piglets..."
+                            aria-label="Search products"
+                            class="w-44 lg:w-56 pl-9 pr-3 py-2 text-sm bg-stone-100 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-farm-600 focus:bg-white transition-all"
+                        >
+                        <svg class="w-4 h-4 text-stone-400 absolute left-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+
+                    <!-- Admin Portal Button -->
+                    <button
+                        id="openAdminBtn"
+                        type="button"
+                        aria-label="Open Farm Admin Dashboard"
+                        class="relative hidden sm:inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl text-sm font-semibold text-farm-800 bg-farm-50 hover:bg-farm-100 border border-farm-200 transition-all active:scale-95"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <span>Admin</span>
+                        <span id="adminPendingBadge" class="hidden inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold bg-earth-600 text-white rounded-full">0</span>
+                    </button>
+
+                    <!-- Cart Button -->
+                    <button
+                        id="openCartBtn"
+                        type="button"
+                        aria-label="Open shopping cart"
+                        class="relative flex items-center gap-2 bg-farm-700 hover:bg-farm-800 text-white px-3.5 sm:px-4 py-2.5 rounded-xl font-semibold text-sm shadow-sm transition-all active:scale-95"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        <span class="hidden sm:inline">Cart</span>
+                        <span id="cartCountBadge" class="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 text-xs font-bold bg-amber-400 text-farm-900 rounded-full">0</span>
+                    </button>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button
+                        id="mobileMenuBtn"
+                        type="button"
+                        aria-label="Toggle navigation menu"
+                        class="lg:hidden p-2.5 rounded-xl text-stone-600 hover:bg-stone-100 border border-stone-200 transition-colors"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Dropdown -->
+        <div id="mobileMenu" class="hidden lg:hidden bg-white border-t border-stone-200 px-4 py-4 space-y-3 shadow-lg">
+            <div class="relative">
+                <input
+                    type="text"
+                    id="mobileSearchInput"
+                    placeholder="Search pork cuts, piglets, compost..."
+                    class="w-full pl-9 pr-3 py-2.5 text-sm bg-stone-100 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-farm-600"
+                >
+                <svg class="w-4 h-4 text-stone-400 absolute left-3 top-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-1 text-sm font-medium">
+                <a href="#shop" onclick="toggleMobileMenu()" class="p-3 rounded-xl bg-stone-50 hover:bg-farm-50 text-stone-700">Shop Products</a>
+                <a href="#shop" onclick="filterByCategory('livestock'); toggleMobileMenu()" class="p-3 rounded-xl bg-stone-50 hover:bg-farm-50 text-stone-700">Breeding Stock</a>
+                <a href="#standards" onclick="toggleMobileMenu()" class="p-3 rounded-xl bg-stone-50 hover:bg-farm-50 text-stone-700">Bio-Security</a>
+                <a href="#bulk-inquiry" onclick="toggleMobileMenu()" class="p-3 rounded-xl bg-stone-50 hover:bg-farm-50 text-stone-700">Bulk / B2B</a>
+                <button type="button" onclick="toggleMobileMenu(); openAdminPortal();" class="col-span-2 p-3 rounded-xl bg-farm-50 border border-farm-200 text-farm-800 font-bold text-left flex items-center justify-between">
+                    <span>Farm Admin Dashboard (Orders)</span>
+                    <span id="mobileAdminPendingBadge" class="px-2 py-0.5 text-xs bg-earth-600 text-white rounded-full">0 Pending</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative overflow-hidden bg-gradient-to-br from-farm-900 via-farm-800 to-farm-700 text-white">
+        <!-- Decorative Background Pattern -->
+        <div class="absolute inset-0 opacity-10 pointer-events-none">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="farmGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#farmGrid)"/>
+            </svg>
+        </div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-24">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                <!-- Left Copy -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-amber-300 text-xs sm:text-sm font-semibold backdrop-blur-sm">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        FSSAI Hygienic Processing • Vet-Certified Herd
+                    </div>
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+                        Farm-Fresh Pork &amp; Elite Breeding Stock, <span class="text-amber-300">Direct from Our Farm.</span>
+                    </h1>
+                    <p class="text-farm-100 text-base sm:text-lg max-w-2xl leading-relaxed">
+                        At Divya Agro Farms, we combine modern bio-secure piggery management with ethical, antibiotic-free feeding. Order tender fresh cuts for your kitchen, book purebred Yorkshire &amp; Duroc piglets, or source nutrient-rich organic farm compost.
+                    </p>
+                    <div class="flex flex-wrap items-center gap-3 sm:gap-4 pt-2">
+                        <a href="#shop" class="inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-300 text-farm-900 font-bold px-6 py-3.5 rounded-xl shadow-lg transition-all active:scale-95">
+                            <span>Shop Fresh Cuts</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                            </svg>
+                        </a>
+                        <a href="#bulk-inquiry" class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/25 text-white font-semibold px-6 py-3.5 rounded-xl backdrop-blur-sm transition-all">
+                            Bulk &amp; Piglet Inquiry
+                        </a>
+                    </div>
+
+                    <!-- Trust Metrics -->
+                    <div class="grid grid-cols-3 gap-4 pt-6 border-t border-white/15 max-w-lg">
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-extrabold text-white">100%</p>
+                            <p class="text-xs sm:text-sm text-farm-200">Farm-Raised &amp; Traceable</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-extrabold text-white">0-4°C</p>
+                            <p class="text-xs sm:text-sm text-farm-200">Chilled Cold-Chain</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-extrabold text-white">500+</p>
+                            <p class="text-xs sm:text-sm text-farm-200">Happy Families &amp; Chefs</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Feature Visual Card -->
+                <div class="lg:col-span-5">
+                    <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-5 sm:p-6 shadow-2xl space-y-5">
+                        <div class="relative rounded-2xl overflow-hidden bg-farm-950/40 aspect-[4/3] flex items-center justify-center">
+                            <img
+                                src="https://placehold.co/800x600/1b4332/f2f8f4?text=Divya+Agro+Farms%0AHygienic+Scientific+Piggery"
+                                alt="Divya Agro Farms hygienic farm facility"
+                                onerror="this.onerror=null; this.src='https://placehold.co/800x600/143326/ffffff?text=Divya+Agro+Farms';"
+                                class="w-full h-full object-cover"
+                            >
+                            <div class="absolute bottom-3 left-3 right-3 bg-farm-900/85 backdrop-blur-sm px-4 py-3 rounded-xl border border-white/15 flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs uppercase tracking-wider text-amber-300 font-semibold">Today's Morning Harvest</p>
+                                    <p class="text-sm font-bold text-white">Fresh Cuts Dispatched Daily at 6:30 AM</p>
+                                </div>
+                                <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-400/30">Live</span>
+                            </div>
+                        </div>
+
+                        <!-- Quick Highlights -->
+                        <div class="grid grid-cols-2 gap-3 text-xs sm:text-sm">
+                            <div class="bg-white/10 rounded-xl p-3 flex items-center gap-2.5">
+                                <span class="w-8 h-8 rounded-lg bg-amber-400/20 text-amber-300 flex items-center justify-center shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                </span>
+                                <span class="font-medium text-farm-50">Zero Antibiotics</span>
+                            </div>
+                            <div class="bg-white/10 rounded-xl p-3 flex items-center gap-2.5">
+                                <span class="w-8 h-8 rounded-lg bg-emerald-400/20 text-emerald-300 flex items-center justify-center shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                </span>
+                                <span class="font-medium text-farm-50">Same-Day Delivery</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Proposition Strip -->
+    <section class="bg-white border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                <div class="flex items-center gap-3 p-2">
+                    <div class="w-11 h-11 rounded-xl bg-farm-50 text-farm-700 flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-stone-900">Direct From Farm</h3>
+                        <p class="text-xs text-stone-500">No middlemen, fair pricing</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 p-2">
+                    <div class="w-11 h-11 rounded-xl bg-earth-50 text-earth-600 flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-stone-900">Vacuum Sealed</h3>
+                        <p class="text-xs text-stone-500">Hygienic &amp; leak-proof packs</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 p-2">
+                    <div class="w-11 h-11 rounded-xl bg-farm-50 text-farm-700 flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-stone-900">Vet Certified</h3>
+                        <p class="text-xs text-stone-500">Vaccinated breeding stock</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 p-2">
+                    <div class="w-11 h-11 rounded-xl bg-earth-50 text-earth-600 flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-stone-900">Flexible Payments</h3>
+                        <p class="text-xs text-stone-500">UPI, Bank Transfer &amp; COD</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main E-Commerce Storefront Section -->
+    <main id="shop" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <!-- Section Header & Sort Controls -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-widest text-earth-600">Divya Agro Store</span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-stone-900 mt-1">Explore Our Farm Catalog</h2>
+                <p class="text-stone-600 text-sm sm:text-base mt-1.5">Freshly butchered pork cuts, Coorg-style marinades, purebred piglets, and organic farm manure.</p>
+            </div>
+
+            <!-- Sort Dropdown -->
+            <div class="flex items-center gap-3 self-start md:self-auto">
+                <label for="sortSelect" class="text-sm font-medium text-stone-600 shrink-0">Sort by:</label>
+                <select
+                    id="sortSelect"
+                    class="bg-white border border-stone-300 text-stone-800 text-sm rounded-xl px-3.5 py-2.5 focus:outline-none focus:ring-2 focus:ring-farm-600 shadow-sm"
+                >
+                    <option value="featured">Featured</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="rating">Customer Rating</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Category Filter Pills -->
+        <div id="categoryTabs" class="flex flex-wrap gap-2 sm:gap-3 mb-8" role="tablist" aria-label="Product Categories">
+            <button type="button" data-category="all" class="category-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all bg-farm-700 text-white shadow-sm">
+                All Products
+            </button>
+            <button type="button" data-category="fresh-cuts" class="category-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all bg-white text-stone-700 border border-stone-200 hover:bg-farm-50">
+                Fresh Pork Cuts
+            </button>
+            <button type="button" data-category="marinated" class="category-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all bg-white text-stone-700 border border-stone-200 hover:bg-farm-50">
+                Ready-to-Cook &amp; Marinated
+            </button>
+            <button type="button" data-category="livestock" id="livestock" class="category-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all bg-white text-stone-700 border border-stone-200 hover:bg-farm-50">
+                Live Piglets &amp; Breeding Stock
+            </button>
+            <button type="button" data-category="agro" class="category-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all bg-white text-stone-700 border border-stone-200 hover:bg-farm-50">
+                Organic Manure &amp; Agro
+            </button>
+        </div>
+
+        <!-- Active Search Indicator (Hidden by default) -->
+        <div id="searchStatusBanner" class="hidden mb-6 bg-farm-50 border border-farm-200 text-farm-900 px-4 py-3 rounded-xl flex items-center justify-between text-sm">
+            <span>Showing results for "<strong id="searchQueryDisplay"></strong>"</span>
+            <button type="button" id="clearSearchBtn" class="text-farm-700 font-semibold hover:underline">Clear search</button>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+            <!-- Dynamically populated by JavaScript -->
+        </div>
+
+        <!-- Empty State (Shown when search/filter has no matches) -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-3xl border border-stone-200">
+            <div class="w-16 h-16 mx-auto bg-stone-100 rounded-2xl flex items-center justify-center text-stone-400 mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+            <h3 class="text-lg font-bold text-stone-900">No products found</h3>
+            <p class="text-stone-500 text-sm mt-1">Try selecting a different category or clearing your search term.</p>
+            <button type="button" onclick="resetFilters()" class="mt-4 px-5 py-2.5 bg-farm-700 text-white text-sm font-semibold rounded-xl hover:bg-farm-800 transition-colors">
+                Show All Products
+            </button>
+        </div>
+    </main>
+
+    <!-- Bio-Security & Farm Standards Section -->
+    <section id="standards" class="bg-farm-50 border-y border-farm-100 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-xs font-bold uppercase tracking-widest text-earth-600">Our Promise</span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-farm-900 mt-1">Scientific Piggery &amp; Bio-Security</h2>
+                <p class="text-stone-600 mt-3 text-sm sm:text-base">Every animal at Divya Agro Farms is raised in clean, well-ventilated slatted-floor housing with strictly monitored nutrition and veterinary oversight.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 sm:p-7 rounded-2xl border border-farm-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 rounded-xl bg-farm-700 text-white flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-stone-900">Balanced Grain Nutrition</h3>
+                    <p class="text-stone-600 text-sm mt-2 leading-relaxed">Our herd is fed a scientifically formulated maize, soy, and mineral-rich ration—never hotel waste—resulting in lean, tender, and flavorful meat.</p>
+                </div>
+
+                <div class="bg-white p-6 sm:p-7 rounded-2xl border border-farm-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 rounded-xl bg-earth-600 text-white flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-stone-900">Strict Bio-Security</h3>
+                    <p class="text-stone-600 text-sm mt-2 leading-relaxed">Footbaths, sanitized barns, quarantine zones, and regular veterinary vaccination schedules keep our Large White Yorkshire and Duroc herd disease-free.</p>
+                </div>
+
+                <div class="bg-white p-6 sm:p-7 rounded-2xl border border-farm-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 rounded-xl bg-farm-700 text-white flex items-center justify-center mb-5">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-stone-900">Chilled Cold-Chain Pack</h3>
+                    <p class="text-stone-600 text-sm mt-2 leading-relaxed">Processed in temperature-controlled rooms, vacuum-sealed to lock in freshness, and delivered in insulated ice-gel boxes directly to your doorstep.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bulk / B2B & Breeding Stock Inquiry Section -->
+    <section id="bulk-inquiry" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="bg-white rounded-3xl border border-stone-200 shadow-lg overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+            <!-- Left Info Panel -->
+            <div class="lg:col-span-5 bg-farm-800 text-white p-8 sm:p-10 flex flex-col justify-between">
+                <div class="space-y-4">
+                    <span class="inline-block px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-xs font-bold uppercase tracking-wider">B2B &amp; Farmers</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold leading-tight">Wholesale Pork, Catering &amp; Piglet Supply</h2>
+                    <p class="text-farm-100 text-sm sm:text-base leading-relaxed">
+                        Partner with Divya Agro Farms for consistent weekly supplies for hotels, restaurants, pork stalls, or starting your own piggery with genetically superior weaned piglets.
+                    </p>
+                    <ul class="space-y-3 pt-4 text-sm text-farm-50">
+                        <li class="flex items-start gap-2.5">
+                            <svg class="w-5 h-5 text-amber-300 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span>Custom wholesale carcass &amp; primal cuts (20 kg+)</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <svg class="w-5 h-5 text-amber-300 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span>Large White Yorkshire, Landrace &amp; Duroc cross piglets</span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <svg class="w-5 h-5 text-amber-300 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span>Farm visit scheduling &amp; beginner piggery guidance</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-white/15 text-sm">
+                    <p class="text-farm-200">Direct Farm Desk:</p>
+                    <p class="font-bold text-lg text-white mt-0.5">+91 98450 00123</p>
+                    <p class="text-farm-200 text-xs mt-1">Mon–Sun • 6:30 AM to 8:00 PM IST</p>
+                </div>
+            </div>
+
+            <!-- Right Form Panel -->
+            <div class="lg:col-span-7 p-8 sm:p-10">
+                <h3 class="text-xl font-bold text-stone-900">Request a Custom Quote or Farm Visit</h3>
+                <p class="text-sm text-stone-500 mt-1">Fill out the details below and our farm manager will contact you within 2 hours.</p>
+
+                <form id="bulkInquiryForm" class="mt-6 space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="inqName" class="block text-xs font-semibold uppercase tracking-wider text-stone-600 mb-1.5">Full Name / Business *</label>
+                            <input type="text" id="inqName" required placeholder="e.g., Rajesh / Coorg Kitchen" class="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-farm-600">
+                        </div>
+                        <div>
+                            <label for="inqPhone" class="block text-xs font-semibold uppercase tracking-wider text-stone-600 mb-1.5">Phone / WhatsApp *</label>
+                            <input type="tel" id="inqPhone" required placeholder="+91 98XXX XXXXX" class="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-farm-600">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="inqType" class="block text-xs font-semibold uppercase tracking-wider text-stone-600 mb-1.5">Requirement Type *</label>
+                            <select id="inqType" class="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-farm-600">
+                                <option value="Bulk Fresh Pork (Restaurant / Catering)">Bulk Fresh Pork (Restaurant / Catering)</option>
+                                <option value="Weaned Piglets (Fattening Batch)">Weaned Piglets (Fattening Batch)</option>
+                                <option value="Breeding Gilts & Boars">Breeding Gilts &amp; Boars</option>
+                                <option value="Bulk Organic Manure (Tractor/Ton)">Bulk Organic Manure (Tractor/Ton)</option>
+                                <option value="Farm Visit / Consultation">Farm Visit / Consultation</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="inqQty" class="block text-xs font-semibold uppercase tracking-wider text-stone-600 mb-1.5">Estimated Quantity</label>
+                            <input type="text" id="inqQty" placeholder="e.g., 50 kg / 15 piglets" class="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-farm-600">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="inqNotes" class="block text-xs font-semibold uppercase tracking-wider text-stone-600 mb-1.5">Delivery Location &amp; Notes</label>
+                        <textarea id="inqNotes" rows="3" placeholder="Share your city/taluk, preferred breed or cut specifications, and delivery date..." class="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-farm-600"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full sm:w-auto px-7 py-3.5 bg-farm-700 hover:bg-farm-800 text-white font-bold text-sm rounded-xl shadow-md transition-all active:scale-95">
+                        Submit Inquiry
+                    </button>
+                </form>
+
+                <!-- Inline Confirmation Message -->
+                <div id="inquirySuccessBox" class="hidden mt-5 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 flex items-start gap-3">
+                    <svg class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <div class="text-sm">
+                        <p class="font-bold">Inquiry Received!</p>
+                        <p id="inquirySuccessText" class="text-emerald-800 mt-0.5"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-stone-900 text-stone-300 pt-14 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-10 border-b border-stone-800">
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2.5 text-white">
+                        <div class="w-9 h-9 rounded-lg bg-farm-600 flex items-center justify-center font-bold">DA</div>
+                        <span class="text-lg font-extrabold tracking-tight">Divya Agro Farms</span>
+                    </div>
+                    <p class="text-sm text-stone-400 leading-relaxed">
+                        Ethically managed pig farm delivering hygienic farm-fresh pork, healthy breeding piglets, and organic farm manure directly across Karnataka.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-3">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#shop" onclick="filterByCategory('fresh-cuts')" class="hover:text-amber-300 transition-colors">Fresh Pork Cuts</a></li>
+                        <li><a href="#shop" onclick="filterByCategory('marinated')" class="hover:text-amber-300 transition-colors">Coorg Style Marinades</a></li>
+                        <li><a href="#shop" onclick="filterByCategory('livestock')" class="hover:text-amber-300 transition-colors">Piglets &amp; Breeding Stock</a></li>
+                        <li><a href="#shop" onclick="filterByCategory('agro')" class="hover:text-amber-300 transition-colors">Organic Farm Compost</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-3">Farm Address</h4>
+                    <p class="text-sm text-stone-400 leading-relaxed">
+                        Divya Agro Farms, Survey No. 42,<br>
+                        Doddaballapura Road, Bengaluru Rural,<br>
+                        Karnataka – 561203
+                    </p>
+                    <p class="text-xs text-stone-500 mt-2">FSSAI Reg: 2122600000XXXX (Demo)</p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold text-sm uppercase tracking-wider mb-3">Customer Support</h4>
+                    <ul class="space-y-2 text-sm text-stone-400">
+                        <li>Phone: <span class="text-white font-medium">+91 98450 00123</span></li>
+                        <li>Email: <span class="text-white font-medium">orders@divyaagrofarms.in</span></li>
+                        <li>Delivery Slots: 7–10 AM &amp; 4–7 PM</li>
+                        <li class="pt-1">
+                            <button type="button" onclick="openAdminPortal()" class="text-amber-300 hover:text-amber-200 font-semibold underline underline-offset-4">
+                                Open Farm Admin Portal →
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
+                <p>&copy; <span id="currentYear"></span> Divya Agro Farms. All rights reserved.</p>
+                <p>Hygienically Processed • Cold-Chain Verified • 100% Farm Direct</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Slide-Over Shopping Cart Drawer -->
+    <div id="cartOverlay" class="fixed inset-0 z-50 hidden">
+        <!-- Backdrop -->
+        <div id="cartBackdrop" class="absolute inset-0 bg-stone-900/60 backdrop-blur-xs transition-opacity"></div>
+
+        <!-- Drawer Panel -->
+        <aside class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl flex flex-col">
+            <!-- Cart Header -->
+            <div class="px-5 py-4 border-b border-stone-200 flex items-center justify-between bg-stone-50">
+                <div>
+                    <h2 class="text-lg font-extrabold text-stone-900">Your Farm Basket</h2>
+                    <p id="cartHeaderSubtitle" class="text-xs text-stone-500">0 items selected</p>
+                </div>
+                <button id="closeCartBtn" type="button" aria-label="Close cart" class="p-2 rounded-xl text-stone-500 hover:bg-stone-200 hover:text-stone-900 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- Free Delivery Progress Bar -->
+            <div class="px-5 py-3 bg-farm-50 border-b border-farm-100">
+                <div class="flex items-center justify-between text-xs font-semibold text-farm-900 mb-1.5">
+                    <span id="freeDeliveryText">Add ₹1,000 more for FREE delivery</span>
+                    <span id="freeDeliveryPercent">0%</span>
+                </div>
+                <div class="w-full h-2 bg-farm-200 rounded-full overflow-hidden">
+                    <div id="freeDeliveryBar" class="h-full bg-farm-600 rounded-full transition-all duration-300" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- Cart Items List -->
+            <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-5 space-y-4">
+                <!-- Dynamically populated -->
+            </div>
+
+            <!-- Cart Footer Summary -->
+            <div id="cartFooter" class="p-5 border-t border-stone-200 bg-stone-50 space-y-3">
+                <div class="space-y-1.5 text-sm">
+                    <div class="flex justify-between text-stone-600">
+                        <span>Subtotal</span>
+                        <span id="cartSubtotal" class="font-semibold text-stone-900">₹0</span>
+                    </div>
+                    <div class="flex justify-between text-stone-600">
+                        <span>Cold-Chain Delivery</span>
+                        <span id="cartDeliveryFee" class="font-semibold text-stone-900">₹60</span>
+                    </div>
+                    <div class="flex justify-between text-base font-extrabold text-stone-900 pt-2 border-t border-stone-200">
+                        <span>Total Payable</span>
+                        <span id="cartTotal">₹0</span>
+                    </div>
+                </div>
+                <button
+                    id="proceedCheckoutBtn"
+                    type="button"
+                    class="w-full py-3.5 bg-farm-700 hover:bg-farm-800 disabled:bg-stone-300 disabled:cursor-not-allowed text-white font-bold rounded-xl shadow-md transition-all active:scale-95"
+                >
+                    Proceed to Checkout
+                </button>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div id="checkoutBackdrop" class="absolute inset-0 bg-stone-900/70 backdrop-blur-xs"></div>
+
+        <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto z-10">
+            <!-- Modal Header -->
+            <div class="sticky top-0 bg-white px-6 py-4 border-b border-stone-200 flex items-center justify-between z-10">
+                <div>
+                    <h3 class="text-lg font-extrabold text-stone-900">Complete Your Order</h3>
+                    <p class="text-xs text-stone-500">Divya Agro Farms Direct Checkout</p>
+                </div>
+                <button id="closeCheckoutBtn" type="button" aria-label="Close checkout" class="p-2 rounded-xl text-stone-500 hover:bg-stone-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- Checkout Form View -->
+            <form id="checkoutForm" class="p-6 space-y-5">
+                <div class="bg-farm-50 border border-farm-100 rounded-2xl p-4 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-wider text-farm-700">Order Total</p>
+                        <p id="checkoutSummaryCount" class="text-xs text-stone-600 mt-0.5">0 items</p>
+                    </div>
+                    <p id="checkoutSummaryTotal" class="text-2xl font-extrabold text-farm-900">₹0</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="custName" class="block text-xs font-semibold uppercase text-stone-600 mb-1">Full Name *</label>
+                        <input type="text" id="custName" required placeholder="Your name" class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-farm-600">
+                    </div>
+                    <div>
+                        <label for="custPhone" class="block text-xs font-semibold uppercase text-stone-600 mb-1">Mobile Number *</label>
+                        <input type="tel" id="custPhone" required placeholder="10-digit mobile number" class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-farm-600">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="custAddress" class="block text-xs font-semibold uppercase text-stone-600 mb-1">Delivery Address &amp; Pincode *</label>
+                    <textarea id="custAddress" rows="2" required placeholder="House/Flat No., Street, Landmark, City, Pincode" class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-farm-600"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="deliverySlot" class="block text-xs font-semibold uppercase text-stone-600 mb-1">Preferred Delivery Slot</label>
+                        <select id="deliverySlot" class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-farm-600">
+                            <option value="Tomorrow Morning (7:00 AM - 10:00 AM)">Tomorrow Morning (7–10 AM)</option>
+                            <option value="Today Evening (4:00 PM - 7:00 PM)">Today Evening (4–7 PM)</option>
+                            <option value="Farm Pickup (Doddaballapura Rd)">Self Pickup at Farm</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="paymentMethod" class="block text-xs font-semibold uppercase text-stone-600 mb-1">Payment Method</label>
+                        <select id="paymentMethod" class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-farm-600">
+                            <option value="UPI (GPay / PhonePe / Paytm)">UPI (GPay / PhonePe / Paytm)</option>
+                            <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
+                            <option value="Bank Transfer (NEFT / IMPS)">Bank Transfer (NEFT / IMPS)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 bg-farm-700 hover:bg-farm-800 text-white font-bold rounded-xl shadow-lg transition-all active:scale-95">
+                    Place Order Now
+                </button>
+            </form>
+
+            <!-- Order Confirmed View (Hidden until submitted) -->
+            <div id="orderSuccessView" class="hidden p-6 sm:p-8 text-center space-y-5">
+                <div class="w-16 h-16 mx-auto rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                    <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-extrabold text-stone-900">Order Confirmed!</h3>
+                    <p class="text-sm text-stone-600 mt-1">Thank you for choosing Divya Agro Farms. Our dispatch team is preparing your fresh order.</p>
+                </div>
+                <div class="bg-stone-50 border border-stone-200 rounded-2xl p-4 text-left text-sm space-y-1.5">
+                    <div class="flex justify-between">
+                        <span class="text-stone-500">Order ID:</span>
+                        <span id="confirmedOrderId" class="font-bold text-farm-900"></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-stone-500">Customer:</span>
+                        <span id="confirmedCustName" class="font-semibold text-stone-800"></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-stone-500">Slot:</span>
+                        <span id="confirmedSlot" class="font-semibold text-stone-800"></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-stone-500">Payment:</span>
+                        <span id="confirmedPayment" class="font-semibold text-stone-800"></span>
+                    </div>
+                    <div class="flex justify-between pt-2 border-t border-stone-200">
+                        <span class="text-stone-600 font-semibold">Amount:</span>
+                        <span id="confirmedTotal" class="font-extrabold text-farm-800"></span>
+                    </div>
+                </div>
+
+                <!-- Hidden text area for clipboard copy fallback -->
+                <textarea id="orderCopyBuffer" class="sr-only" aria-hidden="true"></textarea>
+
+                <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                    <button type="button" id="copyOrderSummaryBtn" class="flex-1 py-3 px-4 rounded-xl border border-farm-700 text-farm-700 hover:bg-farm-50 font-semibold text-sm transition-colors">
+                        Copy Order Summary
+                    </button>
+                    <button type="button" id="continueShoppingBtn" class="flex-1 py-3 px-4 rounded-xl bg-farm-700 hover:bg-farm-800 text-white font-bold text-sm transition-colors">
+                        Continue Shopping
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Toast Notification -->
+    <div id="toastNotification" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden bg-stone-900 text-white px-5 py-3 rounded-2xl shadow-xl text-sm font-medium flex items-center gap-2.5 max-w-[90vw]">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shrink-0"></span>
+        <span id="toastMessage">Added to basket</span>
+    </div>
+
+    <!-- Admin PIN Login Modal -->
+    <div id="adminPinModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div id="adminPinBackdrop" class="absolute inset-0 bg-stone-900/70 backdrop-blur-xs"></div>
+        <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-sm p-6 sm:p-7 z-10 space-y-5">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="inline-block px-2.5 py-0.5 rounded-full bg-farm-50 text-farm-700 text-xs font-bold uppercase tracking-wider">Owner Access</span>
+                    <h3 class="text-xl font-extrabold text-stone-900 mt-1">Farm Admin Login</h3>
+                </div>
+                <button type="button" id="closeAdminPinBtn" aria-label="Close login modal" class="p-2 rounded-xl text-stone-400 hover:bg-stone-100 hover:text-stone-700">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <p class="text-sm text-stone-500">Enter your 4-digit Farm Manager PIN to view incoming orders, bulk inquiries, and daily stock.</p>
+            <form id="adminPinForm" class="space-y-4">
+                <div>
+                    <label for="adminPinInput" class="block text-xs font-semibold uppercase text-stone-600 mb-1.5">Manager PIN</label>
+                    <input
+                        type="password"
+                        id="adminPinInput"
+                        maxlength="6"
+                        inputmode="numeric"
+                        placeholder="Enter PIN (Demo: 1234)"
+                        required
+                        class="w-full px-4 py-3 rounded-xl border border-stone-300 text-center text-lg font-bold tracking-[0.4em] focus:outline-none focus:ring-2 focus:ring-farm-600"
+                    >
+                    <p id="adminPinError" class="hidden text-xs font-semibold text-red-600 mt-1.5">Incorrect PIN. Demo PIN is 1234.</p>
+                </div>
+                <button type="submit" class="w-full py-3 bg-farm-700 hover:bg-farm-800 text-white font-bold text-sm rounded-xl shadow-md transition-all active:scale-95">
+                    Unlock Dashboard
+                </button>
+                <p class="text-[11px] text-center text-stone-400">Default Demo PIN: <strong class="text-stone-600">1234</strong></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Full-Screen Admin Dashboard Overlay -->
+    <div id="adminDashboardOverlay" class="fixed inset-0 z-50 hidden bg-stone-100 overflow-y-auto">
+        <!-- Admin Top Bar -->
+        <div class="sticky top-0 z-20 bg-farm-900 text-white border-b border-farm-800 shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3 min-w-0">
+                    <div class="w-9 h-9 rounded-xl bg-amber-400 text-farm-900 font-extrabold flex items-center justify-center shrink-0 text-sm">DA</div>
+                    <div class="truncate">
+                        <h2 class="text-base sm:text-lg font-extrabold leading-tight truncate">Divya Agro Farms — Admin Portal</h2>
+                        <p class="text-[11px] text-farm-200 hidden sm:block">Live Order Management, B2B Inquiries &amp; Daily Stock</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                    <!-- Database Connection Status Pill -->
+                    <span id="dbStatusBadge" class="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-400/20 text-amber-200 border border-amber-300/30 text-xs font-bold">
+                        <span class="w-2 h-2 rounded-full bg-amber-300"></span>
+                        <span>Local Demo Mode</span>
+                    </span>
+                    <button
+                        type="button"
+                        id="refreshAdminDataBtn"
+                        title="Sync latest data from database"
+                        class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-semibold border border-white/15 transition-colors"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        <span class="hidden sm:inline">Sync</span>
+                    </button>
+                    <button
+                        type="button"
+                        id="exportOrdersCsvBtn"
+                        class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-semibold border border-white/15 transition-colors"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        <span class="hidden sm:inline">Export CSV</span>
+                    </button>
+                    <button
+                        type="button"
+                        id="closeAdminDashboardBtn"
+                        class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-farm-900 text-xs sm:text-sm font-bold transition-colors"
+                    >
+                        <span>Back to Store</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Main Content -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+            <!-- KPI Summary Cards -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white rounded-2xl border border-stone-200 p-4 sm:p-5 shadow-xs">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-stone-500">Total Orders</p>
+                    <p id="kpiTotalOrders" class="text-2xl sm:text-3xl font-extrabold text-stone-900 mt-1">0</p>
+                    <p id="kpiDeliveredOrders" class="text-xs text-emerald-700 font-medium mt-1">0 delivered</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-stone-200 p-4 sm:p-5 shadow-xs">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-stone-500">Total Revenue</p>
+                    <p id="kpiTotalRevenue" class="text-2xl sm:text-3xl font-extrabold text-farm-800 mt-1">₹0</p>
+                    <p class="text-xs text-stone-500 mt-1">Excludes cancelled</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-stone-200 p-4 sm:p-5 shadow-xs">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-stone-500">Pending Dispatch</p>
+                    <p id="kpiPendingDispatch" class="text-2xl sm:text-3xl font-extrabold text-earth-600 mt-1">0</p>
+                    <p class="text-xs text-stone-500 mt-1">Pending &amp; Confirmed</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-stone-200 p-4 sm:p-5 shadow-xs">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-stone-500">B2B / Piglet Leads</p>
+                    <p id="kpiTotalInquiries" class="text-2xl sm:text-3xl font-extrabold text-stone-900 mt-1">0</p>
+                    <p id="kpiNewInquiries" class="text-xs text-amber-700 font-medium mt-1">0 new requests</p>
+                </div>
+            </div>
+
+            <!-- Admin Section Tabs -->
+            <div class="flex flex-wrap items-center gap-2 border-b border-stone-200 pb-3">
+                <button type="button" data-admin-tab="orders" class="admin-tab-btn px-4 py-2.5 rounded-xl text-sm font-bold bg-farm-700 text-white shadow-xs">
+                    Customer Orders
+                </button>
+                <button type="button" data-admin-tab="inquiries" class="admin-tab-btn px-4 py-2.5 rounded-xl text-sm font-bold bg-white text-stone-600 border border-stone-200 hover:bg-stone-50">
+                    Bulk &amp; Piglet Inquiries
+                </button>
+                <button type="button" data-admin-tab="stock" class="admin-tab-btn px-4 py-2.5 rounded-xl text-sm font-bold bg-white text-stone-600 border border-stone-200 hover:bg-stone-50">
+                    Daily Stock Toggle
+                </button>
+                <button type="button" data-admin-tab="supabase" class="admin-tab-btn px-4 py-2.5 rounded-xl text-sm font-bold bg-white text-stone-600 border border-stone-200 hover:bg-stone-50 flex items-center gap-1.5">
+                    <span id="supabaseTabDot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+                    <span>Supabase DB</span>
+                </button>
+            </div>
+
+            <!-- TAB 1: ORDERS PANEL -->
+            <div id="adminOrdersPanel" class="space-y-4">
+                <!-- Filter & Search Bar -->
+                <div class="bg-white p-4 rounded-2xl border border-stone-200 flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                    <div class="flex flex-wrap gap-1.5" id="adminStatusFilters">
+                        <button type="button" data-status="all" class="admin-status-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-farm-700 text-white">All</button>
+                        <button type="button" data-status="Pending" class="admin-status-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200">Pending</button>
+                        <button type="button" data-status="Confirmed" class="admin-status-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200">Confirmed</button>
+                        <button type="button" data-status="Out for Delivery" class="admin-status-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200">Out for Delivery</button>
+                        <button type="button" data-status="Delivered" class="admin-status-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200">Delivered</button>
+                        <button type="button" data-status="Cancelled" class="admin-status-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200">Cancelled</button>
+                    </div>
+                    <div class="relative w-full lg:w-72">
+                        <input
+                            type="text"
+                            id="adminOrderSearchInput"
+                            placeholder="Search Order ID, name, phone..."
+                            class="w-full pl-9 pr-3 py-2 text-sm bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-farm-600"
+                        >
+                        <svg class="w-4 h-4 text-stone-400 absolute left-3 top-2.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </div>
+                </div>
+
+                <!-- Orders List Container -->
+                <div id="adminOrdersList" class="space-y-4">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <!-- TAB 2: INQUIRIES PANEL -->
+            <div id="adminInquiriesPanel" class="hidden space-y-4">
+                <div id="adminInquiriesList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <!-- TAB 3: STOCK MANAGER PANEL -->
+            <div id="adminStockPanel" class="hidden space-y-4">
+                <div class="bg-amber-50 border border-amber-200 text-amber-900 rounded-2xl p-4 text-sm">
+                    <strong>Live Storefront Sync:</strong> Turning an item off marks it as <em>"Sold Out Today"</em> immediately on the customer storefront.
+                </div>
+                <div id="adminStockList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <!-- TAB 4: SUPABASE DATABASE SETUP PANEL -->
+            <div id="adminSupabasePanel" class="hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Left: Credentials & Connection -->
+                    <div class="lg:col-span-5 bg-white rounded-2xl border border-stone-200 p-5 sm:p-6 shadow-xs space-y-4">
+                        <div class="flex items-center justify-between gap-2">
+                            <div>
+                                <h3 class="text-base font-extrabold text-stone-900">Connect Supabase Project</h3>
+                                <p class="text-xs text-stone-500 mt-0.5">Find these in Supabase → Project Settings → API</p>
+                            </div>
+                            <span id="supabaseCardStatus" class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">Not Connected</span>
+                        </div>
+
+                        <form id="supabaseConfigForm" class="space-y-4">
+                            <div>
+                                <label for="supabaseUrlInput" class="block text-xs font-semibold uppercase tracking-wider text-stone-600 mb-1">Project URL *</label>
+                                <input
+                                    type="url"
+                                    id="supabaseUrlInput"
+                                    required
+                                    placeholder="https://your-project-ref.supabase.co"
+                                    class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-farm-600"
+                                >
+                            </div>
+                            <div>
+                                <label for="supabaseKeyInput" class="block text-xs font-semibold uppercase tracking-wider text-stone-600 mb-1">Publishable / Anon Key *</label>
+                                <input
+                                    type="password"
+                                    id="supabaseKeyInput"
+                                    required
+                                    placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..."
+                                    class="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-farm-600"
+                                >
+                            </div>
+                            <div class="flex flex-wrap gap-2 pt-1">
+                                <button type="submit" id="saveSupabaseBtn" class="flex-1 px-4 py-2.5 bg-farm-700 hover:bg-farm-800 text-white text-sm font-bold rounded-xl shadow-xs transition-all active:scale-95">
+                                    Save &amp; Connect
+                                </button>
+                                <button type="button" id="disconnectSupabaseBtn" class="px-4 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 text-sm font-semibold rounded-xl transition-colors">
+                                    Use Local Mode
+                                </button>
+                            </div>
+                        </form>
+
+                        <div id="supabaseFeedbackBox" class="hidden p-3.5 rounded-xl text-xs font-medium border"></div>
+
+                        <div class="pt-3 border-t border-stone-100 text-xs text-stone-500 space-y-1">
+                            <p><strong>Going live for customers?</strong> Paste your Project URL and Anon Key into <code class="bg-stone-100 px-1.5 py-0.5 rounded text-stone-800">DEFAULT_SUPABASE_URL</code> and <code class="bg-stone-100 px-1.5 py-0.5 rounded text-stone-800">DEFAULT_SUPABASE_ANON_KEY</code> inside this file so every customer device connects automatically.</p>
+                        </div>
+                    </div>
+
+                    <!-- Right: One-Click SQL Schema Setup -->
+                    <div class="lg:col-span-7 bg-white rounded-2xl border border-stone-200 p-5 sm:p-6 shadow-xs space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                                <h3 class="text-base font-extrabold text-stone-900">Step 1: Run This SQL in Supabase</h3>
+                                <p class="text-xs text-stone-500 mt-0.5">Open Supabase Dashboard → SQL Editor → New Query → Paste &amp; Run</p>
+                            </div>
+                            <button
+                                type="button"
+                                id="copySupabaseSqlBtn"
+                                class="px-3.5 py-2 rounded-xl bg-farm-50 hover:bg-farm-100 text-farm-800 border border-farm-200 text-xs font-bold transition-colors"
+                            >
+                                Copy SQL Script
+                            </button>
+                        </div>
+                        <pre id="supabaseSqlCode" class="bg-stone-900 text-emerald-300 text-[11px] sm:text-xs p-4 rounded-xl overflow-x-auto leading-relaxed font-mono max-h-80 overflow-y-auto">-- 1. Customer Orders Table
+create table if not exists public.orders (
+  id text primary key,
+  created_at timestamptz default now(),
+  customer_name text not null,
+  phone text not null,
+  address text not null,
+  slot text not null,
+  payment text not null,
+  status text default 'Pending',
+  items jsonb not null default '[]'::jsonb,
+  subtotal numeric not null default 0,
+  delivery_fee numeric not null default 0,
+  total numeric not null default 0
+);
+
+-- 2. Bulk / B2B &amp; Piglet Inquiries Table
+create table if not exists public.inquiries (
+  ref_no text primary key,
+  created_at timestamptz default now(),
+  name text not null,
+  phone text not null,
+  type text not null,
+  qty text,
+  notes text,
+  status text default 'New'
+);
+
+-- 3. Daily Product Stock Toggle Table
+create table if not exists public.product_stock (
+  product_id text primary key,
+  in_stock boolean not null default true,
+  updated_at timestamptz default now()
+);
+
+-- 4. Enable Row Level Security &amp; App Policies
+-- (For production, tighten admin update/delete policies using Supabase Auth)
+alter table public.orders enable row level security;
+alter table public.inquiries enable row level security;
+alter table public.product_stock enable row level security;
+
+create policy "Allow storefront orders access" on public.orders
+  for all using (true) with check (true);
+
+create policy "Allow storefront inquiries access" on public.inquiries
+  for all using (true) with check (true);
+
+create policy "Allow storefront stock access" on public.product_stock
+  for all using (true) with check (true);
+
+-- 5. Enable Realtime for instant Admin Dashboard order alerts
+alter publication supabase_realtime add table public.orders;
+alter publication supabase_realtime add table public.inquiries;</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden buffer for Admin clipboard copy -->
+    <textarea id="adminCopyBuffer" class="sr-only" aria-hidden="true"></textarea>
+
+    <!-- Application Script -->
+    <script>
+        /**
+         * Divya Agro Farms E-Commerce Application
+         * Handles product catalog rendering, variant selection, filtering, searching,
+         * cart state persistence (localStorage), checkout workflow, and bulk inquiries.
+         */
+
+        // =========================================================================
+        // 2. STATE MANAGEMENT & SUPABASE CLOUD ADAPTER
+        // =========================================================================
+        const FREE_DELIVERY_THRESHOLD = 1000;
+        const DELIVERY_FEE = 60;
+        const ADMIN_DEMO_PIN = '1234';
+
+        // Paste your Supabase credentials here before deploying publicly so
+        // every customer device automatically saves orders to your Supabase DB:
+        const DEFAULT_SUPABASE_URL = '';      // e.g. 'https://xyzcompany.supabase.co'
+        const DEFAULT_SUPABASE_ANON_KEY = ''; // e.g. 'eyJhbGciOiJIUzI1NiIsInR5cCI6...'
+
+        let supabaseClient = null;
+        let supabaseRealtimeChannel = null;
+
+        // Seed demo orders so the farm owner can immediately preview the dashboard
+        const SEED_ORDERS = [
+            {
+                id: 'DAF-842105',
+                createdAt: new Date(Date.now() - 1000 * 60 * 55).toISOString(),
+                customerName: 'Pradeep Gowda',
+                phone: '+91 98451 22419',
+                address: 'Flat 304, Green Meadows Apt, Yelahanka New Town, Bengaluru 560064',
+                slot: 'Tomorrow Morning (7:00 AM - 10:00 AM)',
+                payment: 'UPI (GPay / PhonePe / Paytm)',
+                status: 'Pending',
+                items: [
+                    { name: 'Farm-Fresh Pork Curry Cut', variant: '1 kg Pack', price: 460, quantity: 2 },
+                    { name: 'Coorg Style Pandi Curry Pack', variant: '500g Ready Pack', price: 360, quantity: 1 }
+                ],
+                subtotal: 1280,
+                deliveryFee: 0,
+                total: 1280
+            },
+            {
+                id: 'DAF-841932',
+                createdAt: new Date(Date.now() - 1000 * 60 * 60 * 4).toISOString(),
+                customerName: 'Meenakshi Bopanna',
+                phone: '+91 99002 77810',
+                address: 'No. 18, 4th Cross, Indiranagar 2nd Stage, Bengaluru 560038',
+                slot: 'Today Evening (4:00 PM - 7:00 PM)',
+                payment: 'Cash on Delivery (COD)',
+                status: 'Confirmed',
+                items: [
+                    { name: 'Premium Pork Belly (Skin-On)', variant: '1 kg Slab', price: 600, quantity: 1 },
+                    { name: 'Meaty Pork Spare Ribs (BBQ Cut)', variant: '500g BBQ Rubbed', price: 340, quantity: 1 }
+                ],
+                subtotal: 940,
+                deliveryFee: 60,
+                total: 1000
+            },
+            {
+                id: 'DAF-841210',
+                createdAt: new Date(Date.now() - 1000 * 60 * 60 * 22).toISOString(),
+                customerName: 'Ramesh Farm & Nursery',
+                phone: '+91 94480 65102',
+                address: 'Near APMC Yard, Doddaballapura, Karnataka 561203',
+                slot: 'Farm Pickup (Doddaballapura Rd)',
+                payment: 'Bank Transfer (NEFT / IMPS)',
+                status: 'Delivered',
+                items: [
+                    { name: 'Large White Yorkshire Piglets', variant: 'Booking Token (Per Head)', price: 1000, quantity: 5 },
+                    { name: 'Enriched Organic Pig Manure Compost', variant: '50 kg Bulk Sack', price: 820, quantity: 2 }
+                ],
+                subtotal: 6640,
+                deliveryFee: 0,
+                total: 6640
+            }
+        ];
+
+        const SEED_INQUIRIES = [
+            {
+                refNo: 'INQ-4821',
+                createdAt: new Date(Date.now() - 1000 * 60 * 140).toISOString(),
+                name: 'Kodava Spice Kitchen',
+                phone: '+91 97400 33112',
+                type: 'Bulk Fresh Pork (Restaurant / Catering)',
+                qty: '35 kg weekly',
+                notes: 'Looking for regular Sunday & Wednesday morning supply of curry cut and belly in Koramangala.',
+                status: 'New'
+            },
+            {
+                refNo: 'INQ-4790',
+                createdAt: new Date(Date.now() - 1000 * 60 * 60 * 19).toISOString(),
+                name: 'Suresh Naik',
+                phone: '+91 96112 88940',
+                type: 'Weaned Piglets (Fattening Batch)',
+                qty: '12 LWY piglets',
+                notes: 'Starting a small piggery in Tumakuru. Would like to visit the farm this Saturday.',
+                status: 'Contacted'
+            }
+        ];
+
+        let state = {
+            category: 'all',
+            searchQuery: '',
+            sortBy: 'featured',
+            selectedVariants: {}, // { productId: variantIndex }
+            cart: [],             // [{ productId, variantIndex, quantity }]
+            orders: [],
+            inquiries: [],
+            stockOverrides: {},   // { productId: boolean } (false = sold out)
+            adminUnlocked: false,
+            adminTab: 'orders',
+            adminStatusFilter: 'all',
+            adminSearchQuery: '',
+            pendingDeleteOrderId: null,
+            supabaseConnected: false
+        };
+
+        // Load saved cart, orders, inquiries, and stock safely from localStorage
+        function loadCartFromStorage() {
+            try {
+                const raw = localStorage.getItem('divya_agro_cart_v1');
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) {
+                        state.cart = parsed.filter(item =>
+                            PRODUCTS.some(p => p.id === item.productId) && item.quantity > 0
+                        );
+                    }
+                }
+            } catch (err) {
+                console.warn('Could not load saved cart:', err);
+                state.cart = [];
+            }
+
+            try {
+                const savedOrders = localStorage.getItem('divya_agro_orders_v1');
+                state.orders = savedOrders ? JSON.parse(savedOrders) : [...SEED_ORDERS];
+                if (!savedOrders) saveOrdersToStorage();
+            } catch (err) {
+                state.orders = [...SEED_ORDERS];
+            }
+
+            try {
+                const savedInq = localStorage.getItem('divya_agro_inquiries_v1');
+                state.inquiries = savedInq ? JSON.parse(savedInq) : [...SEED_INQUIRIES];
+                if (!savedInq) saveInquiriesToStorage();
+            } catch (err) {
+                state.inquiries = [...SEED_INQUIRIES];
+            }
+
+            try {
+                const savedStock = localStorage.getItem('divya_agro_stock_v1');
+                state.stockOverrides = savedStock ? JSON.parse(savedStock) : {};
+            } catch (err) {
+                state.stockOverrides = {};
+            }
+        }
+
+        function saveCartToStorage() {
+            try {
+                localStorage.setItem('divya_agro_cart_v1', JSON.stringify(state.cart));
+            } catch (err) {
+                console.warn('Could not persist cart:', err);
+            }
+        }
+
+        function saveOrdersToStorage() {
+            try {
+                localStorage.setItem('divya_agro_orders_v1', JSON.stringify(state.orders));
+            } catch (err) {
+                console.warn('Could not persist orders:', err);
+            }
+        }
+
+        function saveInquiriesToStorage() {
+            try {
+                localStorage.setItem('divya_agro_inquiries_v1', JSON.stringify(state.inquiries));
+            } catch (err) {
+                console.warn('Could not persist inquiries:', err);
+            }
+        }
+
+        function saveStockToStorage() {
+            try {
+                localStorage.setItem('divya_agro_stock_v1', JSON.stringify(state.stockOverrides));
+            } catch (err) {
+                console.warn('Could not persist stock:', err);
+            }
+        }
+
+        function isProductInStock(productId) {
+            return state.stockOverrides[productId] !== false;
+        }
+
+        // Format number as Indian Rupees
+        function formatINR(amount) {
+            return '₹' + Number(amount).toLocaleString('en-IN');
+        }
+
+        function formatOrderTime(isoString) {
+            try {
+                return new Date(isoString).toLocaleString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (e) {
+                return isoString;
+            }
+        }
+
+        // Update pending order counter badge in header & mobile menu
+        function updateAdminBadges() {
+            const pendingCount = state.orders.filter(o => o.status === 'Pending').length;
+            const desktopBadge = document.getElementById('adminPendingBadge');
+            const mobileBadge = document.getElementById('mobileAdminPendingBadge');
+
+            if (desktopBadge) {
+                if (pendingCount > 0) {
+                    desktopBadge.textContent = pendingCount;
+                    desktopBadge.classList.remove('hidden');
+                } else {
+                    desktopBadge.classList.add('hidden');
+                }
+            }
+            if (mobileBadge) {
+                mobileBadge.textContent = `${pendingCount} Pending`;
+            }
+        }
+
+        // -------------------------------------------------------------------------
+        // SUPABASE CONNECTION & CRUD HELPERS
+        // -------------------------------------------------------------------------
+        function getSavedSupabaseCredentials() {
+            try {
+                const url = (localStorage.getItem('divya_agro_sb_url') || DEFAULT_SUPABASE_URL || '').trim();
+                const key = (localStorage.getItem('divya_agro_sb_key') || DEFAULT_SUPABASE_ANON_KEY || '').trim();
+                return { url, key };
+            } catch (e) {
+                return { url: DEFAULT_SUPABASE_URL, key: DEFAULT_SUPABASE_ANON_KEY };
+            }
+        }
+
+        function updateSupabaseStatusUI() {
+            const connected = state.supabaseConnected;
+            const topBadge = document.getElementById('dbStatusBadge');
+            const tabDot = document.getElementById('supabaseTabDot');
+            const cardStatus = document.getElementById('supabaseCardStatus');
+
+            if (topBadge) {
+                topBadge.className = connected
+                    ? 'hidden md:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 text-xs font-bold'
+                    : 'hidden md:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-400/20 text-amber-200 border border-amber-300/30 text-xs font-bold';
+                topBadge.innerHTML = connected
+                    ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span><span>Supabase Live</span>'
+                    : '<span class="w-2 h-2 rounded-full bg-amber-300"></span><span>Local Demo Mode</span>';
+            }
+            if (tabDot) {
+                tabDot.className = connected
+                    ? 'w-2 h-2 rounded-full bg-emerald-500'
+                    : 'w-2 h-2 rounded-full bg-amber-400';
+            }
+            if (cardStatus) {
+                cardStatus.className = connected
+                    ? 'px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800'
+                    : 'px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800';
+                cardStatus.textContent = connected ? 'Connected Live' : 'Not Connected';
+            }
+        }
+
+        function showSupabaseFeedback(message, isError = false) {
+            const box = document.getElementById('supabaseFeedbackBox');
+            if (!box) return;
+            box.classList.remove('hidden');
+            box.className = isError
+                ? 'p-3.5 rounded-xl text-xs font-medium border bg-red-50 border-red-200 text-red-800'
+                : 'p-3.5 rounded-xl text-xs font-medium border bg-emerald-50 border-emerald-200 text-emerald-800';
+            box.textContent = message;
+        }
+
+        // Convert Supabase snake_case rows to app camelCase objects
+        function mapOrderFromDb(row) {
+            return {
+                id: row.id,
+                createdAt: row.created_at,
+                customerName: row.customer_name,
+                phone: row.phone,
+                address: row.address,
+                slot: row.slot,
+                payment: row.payment,
+                status: row.status || 'Pending',
+                items: Array.isArray(row.items) ? row.items : [],
+                subtotal: Number(row.subtotal || 0),
+                deliveryFee: Number(row.delivery_fee || 0),
+                total: Number(row.total || 0)
+            };
+        }
+
+        function mapInquiryFromDb(row) {
+            return {
+                refNo: row.ref_no,
+                createdAt: row.created_at,
+                name: row.name,
+                phone: row.phone,
+                type: row.type,
+                qty: row.qty || '',
+                notes: row.notes || '',
+                status: row.status || 'New'
+            };
+        }
+
+        // Initialize Supabase client & verify tables
+        async function initSupabase(url, key, isManualConnect = false) {
+            if (!url || !key || !window.supabase) {
+                supabaseClient = null;
+                state.supabaseConnected = false;
+                updateSupabaseStatusUI();
+                return false;
+            }
+
+            try {
+                supabaseClient = window.supabase.createClient(url, key);
+                const { error } = await supabaseClient.from('orders').select('id').limit(1);
+
+                if (error) {
+                    supabaseClient = null;
+                    state.supabaseConnected = false;
+                    updateSupabaseStatusUI();
+                    if (isManualConnect) {
+                        showSupabaseFeedback(`Connection failed: ${error.message}. Make sure you ran the SQL setup script first.`, true);
+                    }
+                    return false;
+                }
+
+                state.supabaseConnected = true;
+                updateSupabaseStatusUI();
+                await syncFromSupabase();
+                subscribeToSupabaseRealtime();
+
+                if (isManualConnect) {
+                    showSupabaseFeedback('Connected to Supabase! Orders, inquiries, and daily stock are now syncing live.');
+                    showToast('Supabase connected live!');
+                }
+                return true;
+            } catch (err) {
+                console.error('Supabase init error:', err);
+                supabaseClient = null;
+                state.supabaseConnected = false;
+                updateSupabaseStatusUI();
+                if (isManualConnect) {
+                    showSupabaseFeedback(`Error connecting: ${err.message}`, true);
+                }
+                return false;
+            }
+        }
+
+        // Subscribe to real-time order & inquiry inserts from Supabase
+        function subscribeToSupabaseRealtime() {
+            if (!supabaseClient) return;
+            try {
+                if (supabaseRealtimeChannel) {
+                    supabaseClient.removeChannel(supabaseRealtimeChannel);
+                }
+                supabaseRealtimeChannel = supabaseClient
+                    .channel('divya-agro-live-changes')
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {
+                        syncFromSupabase();
+                    })
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'inquiries' }, () => {
+                        syncFromSupabase();
+                    })
+                    .subscribe();
+            } catch (err) {
+                console.warn('Realtime subscription optional fallback:', err);
+            }
+        }
+
+        // Fetch latest orders, inquiries, and product stock from Supabase
+        async function syncFromSupabase() {
+            if (!supabaseClient || !state.supabaseConnected) return;
+            try {
+                const [ordersRes, inquiriesRes, stockRes] = await Promise.all([
+                    supabaseClient.from('orders').select('*').order('created_at', { ascending: false }),
+                    supabaseClient.from('inquiries').select('*').order('created_at', { ascending: false }),
+                    supabaseClient.from('product_stock').select('*')
+                ]);
+
+                if (!ordersRes.error && Array.isArray(ordersRes.data)) {
+                    state.orders = ordersRes.data.map(mapOrderFromDb);
+                    saveOrdersToStorage();
+                }
+
+                if (!inquiriesRes.error && Array.isArray(inquiriesRes.data)) {
+                    state.inquiries = inquiriesRes.data.map(mapInquiryFromDb);
+                    saveInquiriesToStorage();
+                }
+
+                if (!stockRes.error && Array.isArray(stockRes.data)) {
+                    const nextStock = {};
+                    stockRes.data.forEach(row => {
+                        nextStock[row.product_id] = Boolean(row.in_stock);
+                    });
+                    state.stockOverrides = nextStock;
+                    saveStockToStorage();
+                    renderProducts();
+                }
+
+                updateAdminBadges();
+                if (!document.getElementById('adminDashboardOverlay').classList.contains('hidden')) {
+                    renderAdminDashboard();
+                }
+            } catch (err) {
+                console.error('Supabase sync error:', err);
+            }
+        }
+
+        async function dbInsertOrder(orderObj) {
+            if (supabaseClient && state.supabaseConnected) {
+                const { error } = await supabaseClient.from('orders').insert([{
+                    id: orderObj.id,
+                    created_at: orderObj.createdAt,
+                    customer_name: orderObj.customerName,
+                    phone: orderObj.phone,
+                    address: orderObj.address,
+                    slot: orderObj.slot,
+                    payment: orderObj.payment,
+                    status: orderObj.status,
+                    items: orderObj.items,
+                    subtotal: orderObj.subtotal,
+                    delivery_fee: orderObj.deliveryFee,
+                    total: orderObj.total
+                }]);
+                if (error) throw error;
+            }
+        }
+
+        async function dbUpdateOrderStatus(orderId, newStatus) {
+            if (supabaseClient && state.supabaseConnected) {
+                const { error } = await supabaseClient
+                    .from('orders')
+                    .update({ status: newStatus })
+                    .eq('id', orderId);
+                if (error) throw error;
+            }
+        }
+
+        async function dbDeleteOrder(orderId) {
+            if (supabaseClient && state.supabaseConnected) {
+                const { error } = await supabaseClient
+                    .from('orders')
+                    .delete()
+                    .eq('id', orderId);
+                if (error) throw error;
+            }
+        }
+
+        async function dbInsertInquiry(inqObj) {
+            if (supabaseClient && state.supabaseConnected) {
+                const { error } = await supabaseClient.from('inquiries').insert([{
+                    ref_no: inqObj.refNo,
+                    created_at: inqObj.createdAt,
+                    name: inqObj.name,
+                    phone: inqObj.phone,
+                    type: inqObj.type,
+                    qty: inqObj.qty,
+                    notes: inqObj.notes,
+                    status: inqObj.status
+                }]);
+                if (error) throw error;
+            }
+        }
+
+        async function dbUpdateInquiryStatus(refNo, newStatus) {
+            if (supabaseClient && state.supabaseConnected) {
+                const { error } = await supabaseClient
+                    .from('inquiries')
+                    .update({ status: newStatus })
+                    .eq('ref_no', refNo);
+                if (error) throw error;
+            }
+        }
+
+        async function dbSetProductStock(productId, inStock) {
+            if (supabaseClient && state.supabaseConnected) {
+                const { error } = await supabaseClient
+                    .from('product_stock')
+                    .upsert({
+                        product_id: productId,
+                        in_stock: inStock,
+                        updated_at: new Date().toISOString()
+                    });
+                if (error) throw error;
+            }
+        }
+
+        // =========================================================================
+        // 3. PRODUCT RENDERING & FILTERING
+        // =========================================================================
+        function getFilteredProducts() {
+            const query = state.searchQuery.trim().toLowerCase();
+
+            let filtered = PRODUCTS.filter(product => {
+                const matchesCategory = state.category === 'all' || product.category === state.category;
+                const matchesSearch = !query ||
+                    product.name.toLowerCase().includes(query) ||
+                    product.description.toLowerCase().includes(query) ||
+                    product.categoryLabel.toLowerCase().includes(query) ||
+                    product.badge.toLowerCase().includes(query);
+                return matchesCategory && matchesSearch;
+            });
+
+            // Apply sorting
+            if (state.sortBy === 'price-asc') {
+                filtered.sort((a, b) => a.variants[0].price - b.variants[0].price);
+            } else if (state.sortBy === 'price-desc') {
+                filtered.sort((a, b) => b.variants[0].price - a.variants[0].price);
+            } else if (state.sortBy === 'rating') {
+                filtered.sort((a, b) => b.rating - a.rating);
+            }
+
+            return filtered;
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            const emptyState = document.getElementById('emptyState');
+            const searchBanner = document.getElementById('searchStatusBanner');
+            const searchQueryDisplay = document.getElementById('searchQueryDisplay');
+
+            // Update search banner visibility
+            if (state.searchQuery.trim().length > 0) {
+                searchBanner.classList.remove('hidden');
+                searchQueryDisplay.textContent = state.searchQuery.trim();
+            } else {
+                searchBanner.classList.add('hidden');
+            }
+
+            const products = getFilteredProducts();
+
+            if (products.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            grid.innerHTML = products.map(product => {
+                const activeVarIdx = state.selectedVariants[product.id] ?? 0;
+                const activeVariant = product.variants[activeVarIdx] || product.variants[0];
+                const inStock = isProductInStock(product.id);
+
+                const variantButtons = product.variants.map((variant, idx) => {
+                    const isSelected = idx === activeVarIdx;
+                    return `
+                        <button
+                            type="button"
+                            onclick="selectVariant('${product.id}', ${idx})"
+                            class="px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+                                isSelected
+                                    ? 'bg-farm-700 text-white border-farm-700 shadow-xs'
+                                    : 'bg-stone-50 text-stone-700 border-stone-200 hover:border-farm-600'
+                            }"
+                        >
+                            ${variant.label}
+                        </button>
+                    `;
+                }).join('');
+
+                return `
+                    <article class="bg-white rounded-2xl border border-stone-200 shadow-sm hover:shadow-lg transition-all duration-200 flex flex-col overflow-hidden group ${!inStock ? 'opacity-80' : ''}">
+                        <!-- Product Image & Badges -->
+                        <div class="relative aspect-[16/11] bg-stone-100 overflow-hidden">
+                            <img
+                                src="${product.image}"
+                                alt="${product.name}"
+                                loading="lazy"
+                                onerror="this.onerror=null; this.src='https://placehold.co/600x420/1b4332/ffffff?text=Divya+Agro+Farms';"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ${!inStock ? 'grayscale' : ''}"
+                            >
+                            <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+                                <span class="px-2.5 py-1 rounded-lg bg-white/95 backdrop-blur-xs text-farm-900 text-[11px] font-bold shadow-xs">
+                                    ${product.badge}
+                                </span>
+                                <span class="px-2.5 py-1 rounded-lg bg-stone-900/75 backdrop-blur-xs text-white text-[11px] font-medium">
+                                    ${product.categoryLabel}
+                                </span>
+                                ${!inStock ? '<span class="px-2.5 py-1 rounded-lg bg-red-600 text-white text-[11px] font-bold shadow-xs">Sold Out Today</span>' : ''}
+                            </div>
+                            <div class="absolute bottom-3 right-3 px-2.5 py-1 rounded-lg bg-white/95 text-stone-800 text-xs font-bold flex items-center gap-1 shadow-xs">
+                                <svg class="w-3.5 h-3.5 text-amber-500 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                <span>${product.rating}</span>
+                                <span class="text-stone-400 font-normal">(${product.reviews})</span>
+                            </div>
+                        </div>
+
+                        <!-- Card Content -->
+                        <div class="p-5 flex-1 flex flex-col">
+                            <h3 class="text-lg font-bold text-stone-900 leading-snug">${product.name}</h3>
+                            <p class="text-xs sm:text-sm text-stone-500 mt-1.5 leading-relaxed flex-1">${product.description}</p>
+
+                            <!-- Variant Selector -->
+                            <div class="mt-4">
+                                <span class="block text-[11px] font-semibold uppercase tracking-wider text-stone-400 mb-1.5">Select Option</span>
+                                <div class="flex flex-wrap gap-1.5">
+                                    ${variantButtons}
+                                </div>
+                            </div>
+
+                            <!-- Price & Add Button -->
+                            <div class="mt-5 pt-4 border-t border-stone-100 flex items-center justify-between gap-3">
+                                <div>
+                                    <span class="block text-[11px] text-stone-400 font-medium">${activeVariant.label}</span>
+                                    <span class="text-xl font-extrabold text-farm-900">${formatINR(activeVariant.price)}</span>
+                                </div>
+                                <button
+                                    type="button"
+                                    ${!inStock ? 'disabled' : `onclick="addToCart('${product.id}', ${activeVarIdx})"`}
+                                    class="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold rounded-xl shadow-xs transition-all ${
+                                        inStock
+                                            ? 'bg-farm-700 hover:bg-farm-800 text-white active:scale-95'
+                                            : 'bg-stone-200 text-stone-500 cursor-not-allowed'
+                                    }"
+                                >
+                                    ${inStock
+                                        ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg><span>Add</span>'
+                                        : '<span>Sold Out</span>'
+                                    }
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        // Update selected variant on a product card
+        window.selectVariant = function(productId, variantIdx) {
+            state.selectedVariants[productId] = variantIdx;
+            renderProducts();
+        };
+
+        // Category switching
+        window.filterByCategory = function(category) {
+            state.category = category;
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                const isActive = btn.dataset.category === category;
+                btn.className = isActive
+                    ? 'category-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all bg-farm-700 text-white shadow-sm'
+                    : 'category-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all bg-white text-stone-700 border border-stone-200 hover:bg-farm-50';
+            });
+            renderProducts();
+        };
+
+        window.resetFilters = function() {
+            state.searchQuery = '';
+            document.getElementById('headerSearchInput').value = '';
+            document.getElementById('mobileSearchInput').value = '';
+            filterByCategory('all');
+        };
+
+        // =========================================================================
+        // 4. SHOPPING CART & CHECKOUT MODAL LOGIC
+        // =========================================================================
+        function calculateCartTotals() {
+            let subtotal = 0;
+            let totalItems = 0;
+
+            state.cart.forEach(item => {
+                const product = PRODUCTS.find(p => p.id === item.productId);
+                if (!product) return;
+                const variant = product.variants[item.variantIndex] || product.variants[0];
+                subtotal += variant.price * item.quantity;
+                totalItems += item.quantity;
+            });
+
+            const deliveryFee = subtotal === 0 || subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
+            return {
+                subtotal,
+                deliveryFee,
+                total: subtotal + deliveryFee,
+                totalItems
+            };
+        }
+
+        window.addToCart = function(productId, variantIndex) {
+            if (!isProductInStock(productId)) {
+                showToast('Sorry, this item is sold out today.');
+                return;
+            }
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) return;
+            const variant = product.variants[variantIndex] || product.variants[0];
+
+            const existing = state.cart.find(
+                item => item.productId === productId && item.variantIndex === variantIndex
+            );
+
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                state.cart.push({ productId, variantIndex, quantity: 1 });
+            }
+
+            saveCartToStorage();
+            renderCart();
+            showToast(`Added ${product.name} (${variant.label})`);
+        };
+
+        window.updateCartQty = function(productId, variantIndex, delta) {
+            const idx = state.cart.findIndex(
+                item => item.productId === productId && item.variantIndex === variantIndex
+            );
+            if (idx === -1) return;
+
+            state.cart[idx].quantity += delta;
+            if (state.cart[idx].quantity <= 0) {
+                state.cart.splice(idx, 1);
+            }
+
+            saveCartToStorage();
+            renderCart();
+        };
+
+        window.removeFromCart = function(productId, variantIndex) {
+            state.cart = state.cart.filter(
+                item => !(item.productId === productId && item.variantIndex === variantIndex)
+            );
+            saveCartToStorage();
+            renderCart();
+        };
+
+        function renderCart() {
+            const { subtotal, deliveryFee, total, totalItems } = calculateCartTotals();
+
+            document.getElementById('cartCountBadge').textContent = totalItems;
+            document.getElementById('cartHeaderSubtitle').textContent =
+                `${totalItems} ${totalItems === 1 ? 'item' : 'items'} selected`;
+
+            // Update free delivery progress bar
+            const pct = Math.min(100, Math.round((subtotal / FREE_DELIVERY_THRESHOLD) * 100));
+            const remaining = Math.max(0, FREE_DELIVERY_THRESHOLD - subtotal);
+            document.getElementById('freeDeliveryBar').style.width = `${pct}%`;
+            document.getElementById('freeDeliveryPercent').textContent = `${pct}%`;
+            document.getElementById('freeDeliveryText').textContent =
+                subtotal >= FREE_DELIVERY_THRESHOLD
+                    ? 'You unlocked FREE Cold-Chain Delivery!'
+                    : `Add ${formatINR(remaining)} more for FREE delivery`;
+
+            const container = document.getElementById('cartItemsContainer');
+            const checkoutBtn = document.getElementById('proceedCheckoutBtn');
+
+            if (state.cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 space-y-3">
+                        <div class="w-14 h-14 mx-auto rounded-2xl bg-stone-100 text-stone-400 flex items-center justify-center">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                        </div>
+                        <p class="font-bold text-stone-800">Your basket is empty</p>
+                        <p class="text-xs text-stone-500">Add fresh pork cuts, marinades, piglets, or compost to start an order.</p>
+                    </div>
+                `;
+                checkoutBtn.disabled = true;
+            } else {
+                checkoutBtn.disabled = false;
+                container.innerHTML = state.cart.map(item => {
+                    const product = PRODUCTS.find(p => p.id === item.productId);
+                    if (!product) return '';
+                    const variant = product.variants[item.variantIndex] || product.variants[0];
+                    return `
+                        <div class="flex gap-3 p-3 rounded-2xl border border-stone-200 bg-white">
+                            <img
+                                src="${product.image}"
+                                alt="${product.name}"
+                                onerror="this.onerror=null; this.src='https://placehold.co/120x120/1b4332/ffffff?text=DAF';"
+                                class="w-16 h-16 rounded-xl object-cover shrink-0 bg-stone-100"
+                            >
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between gap-2">
+                                    <h4 class="text-sm font-bold text-stone-900 leading-snug truncate">${product.name}</h4>
+                                    <button
+                                        type="button"
+                                        onclick="removeFromCart('${product.id}', ${item.variantIndex})"
+                                        aria-label="Remove item"
+                                        class="text-stone-400 hover:text-red-600 p-0.5"
+                                    >
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                    </button>
+                                </div>
+                                <p class="text-xs text-stone-500">${variant.label}</p>
+                                <div class="mt-2 flex items-center justify-between">
+                                    <span class="text-sm font-extrabold text-farm-900">${formatINR(variant.price * item.quantity)}</span>
+                                    <div class="inline-flex items-center border border-stone-200 rounded-lg overflow-hidden bg-stone-50">
+                                        <button type="button" onclick="updateCartQty('${product.id}', ${item.variantIndex}, -1)" class="px-2.5 py-1 text-stone-700 hover:bg-stone-200 font-bold text-sm">−</button>
+                                        <span class="px-2.5 py-1 text-xs font-bold text-stone-900 bg-white">${item.quantity}</span>
+                                        <button type="button" onclick="updateCartQty('${product.id}', ${item.variantIndex}, 1)" class="px-2.5 py-1 text-stone-700 hover:bg-stone-200 font-bold text-sm">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            document.getElementById('cartSubtotal').textContent = formatINR(subtotal);
+            document.getElementById('cartDeliveryFee').textContent =
+                subtotal === 0 ? '₹0' : (deliveryFee === 0 ? 'FREE' : formatINR(deliveryFee));
+            document.getElementById('cartTotal').textContent = formatINR(total);
+        }
+
+        function openCart() {
+            document.getElementById('cartOverlay').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeCart() {
+            document.getElementById('cartOverlay').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        function openCheckoutModal() {
+            const { total, totalItems } = calculateCartTotals();
+            if (totalItems === 0) return;
+            closeCart();
+            document.getElementById('checkoutSummaryCount').textContent =
+                `${totalItems} ${totalItems === 1 ? 'item' : 'items'} in your basket`;
+            document.getElementById('checkoutSummaryTotal').textContent = formatINR(total);
+            document.getElementById('checkoutForm').classList.remove('hidden');
+            document.getElementById('orderSuccessView').classList.add('hidden');
+            document.getElementById('checkoutModal').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        // =========================================================================
+        // 5. UI HELPERS (TOAST & MOBILE MENU)
+        // =========================================================================
+        let toastTimer = null;
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            const msgEl = document.getElementById('toastMessage');
+            if (!toast || !msgEl) return;
+
+            msgEl.textContent = message;
+            toast.classList.remove('hidden');
+            if (toastTimer) clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 2800);
+        }
+
+        window.toggleMobileMenu = function() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        };
+
+        // =========================================================================
+        // 6. ADMIN DASHBOARD LOGIC
+        // =========================================================================
+        const STATUS_STYLES = {
+            'Pending': 'bg-amber-100 text-amber-800 border-amber-200',
+            'Confirmed': 'bg-blue-100 text-blue-800 border-blue-200',
+            'Out for Delivery': 'bg-purple-100 text-purple-800 border-purple-200',
+            'Delivered': 'bg-emerald-100 text-emerald-800 border-emerald-200',
+            'Cancelled': 'bg-red-100 text-red-700 border-red-200'
+        };
+
+        window.openAdminPortal = function() {
+            if (state.adminUnlocked) {
+                showAdminDashboard();
+            } else {
+                document.getElementById('adminPinError').classList.add('hidden');
+                document.getElementById('adminPinInput').value = '';
+                document.getElementById('adminPinModal').classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+                setTimeout(() => document.getElementById('adminPinInput').focus(), 50);
+            }
+        };
+
+        function closeAdminPinModal() {
+            document.getElementById('adminPinModal').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        function showAdminDashboard() {
+            document.getElementById('adminPinModal').classList.add('hidden');
+            document.getElementById('adminDashboardOverlay').classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            renderAdminDashboard();
+        }
+
+        function closeAdminDashboard() {
+            document.getElementById('adminDashboardOverlay').classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            state.pendingDeleteOrderId = null;
+        }
+
+        function switchAdminTab(tabName) {
+            state.adminTab = tabName;
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                const active = btn.dataset.adminTab === tabName;
+                const isSupabaseTab = btn.dataset.adminTab === 'supabase';
+                btn.className = active
+                    ? `admin-tab-btn px-4 py-2.5 rounded-xl text-sm font-bold bg-farm-700 text-white shadow-xs ${isSupabaseTab ? 'flex items-center gap-1.5' : ''}`
+                    : `admin-tab-btn px-4 py-2.5 rounded-xl text-sm font-bold bg-white text-stone-600 border border-stone-200 hover:bg-stone-50 ${isSupabaseTab ? 'flex items-center gap-1.5' : ''}`;
+            });
+
+            document.getElementById('adminOrdersPanel').classList.toggle('hidden', tabName !== 'orders');
+            document.getElementById('adminInquiriesPanel').classList.toggle('hidden', tabName !== 'inquiries');
+            document.getElementById('adminStockPanel').classList.toggle('hidden', tabName !== 'stock');
+            document.getElementById('adminSupabasePanel').classList.toggle('hidden', tabName !== 'supabase');
+            renderAdminDashboard();
+        }
+
+        function renderAdminKPIs() {
+            const totalOrders = state.orders.length;
+            const deliveredCount = state.orders.filter(o => o.status === 'Delivered').length;
+            const pendingDispatch = state.orders.filter(o => o.status === 'Pending' || o.status === 'Confirmed').length;
+            const revenue = state.orders
+                .filter(o => o.status !== 'Cancelled')
+                .reduce((sum, o) => sum + Number(o.total || 0), 0);
+            const newInquiries = state.inquiries.filter(i => i.status === 'New').length;
+
+            document.getElementById('kpiTotalOrders').textContent = totalOrders;
+            document.getElementById('kpiDeliveredOrders').textContent = `${deliveredCount} delivered`;
+            document.getElementById('kpiTotalRevenue').textContent = formatINR(revenue);
+            document.getElementById('kpiPendingDispatch').textContent = pendingDispatch;
+            document.getElementById('kpiTotalInquiries').textContent = state.inquiries.length;
+            document.getElementById('kpiNewInquiries').textContent = `${newInquiries} new requests`;
+            updateAdminBadges();
+        }
+
+        function renderAdminOrders() {
+            const listEl = document.getElementById('adminOrdersList');
+            const query = state.adminSearchQuery.trim().toLowerCase();
+
+            const filtered = state.orders.filter(order => {
+                const matchesStatus = state.adminStatusFilter === 'all' || order.status === state.adminStatusFilter;
+                const matchesQuery = !query ||
+                    order.id.toLowerCase().includes(query) ||
+                    order.customerName.toLowerCase().includes(query) ||
+                    order.phone.toLowerCase().includes(query) ||
+                    order.address.toLowerCase().includes(query);
+                return matchesStatus && matchesQuery;
+            });
+
+            if (filtered.length === 0) {
+                listEl.innerHTML = `
+                    <div class="bg-white rounded-2xl border border-stone-200 p-12 text-center">
+                        <p class="font-bold text-stone-800">No matching orders found</p>
+                        <p class="text-xs text-stone-500 mt-1">New customer orders placed on the storefront will appear here immediately.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            listEl.innerHTML = filtered.map(order => {
+                const badgeClass = STATUS_STYLES[order.status] || 'bg-stone-100 text-stone-700 border-stone-200';
+                const isConfirmingDelete = state.pendingDeleteOrderId === order.id;
+
+                const itemsHtml = order.items.map(it => `
+                    <li class="flex justify-between text-xs sm:text-sm py-1 border-b border-stone-100 last:border-0">
+                        <span class="text-stone-700"><strong>${it.quantity}×</strong> ${it.name} <span class="text-stone-400">(${it.variant})</span></span>
+                        <span class="font-semibold text-stone-900 shrink-0 ml-2">${formatINR(it.price * it.quantity)}</span>
+                    </li>
+                `).join('');
+
+                return `
+                    <div class="bg-white rounded-2xl border border-stone-200 shadow-xs overflow-hidden">
+                        <div class="px-4 sm:px-5 py-3.5 bg-stone-50 border-b border-stone-200 flex flex-wrap items-center justify-between gap-2">
+                            <div class="flex flex-wrap items-center gap-2.5">
+                                <span class="text-sm font-extrabold text-farm-900">${order.id}</span>
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold border ${badgeClass}">${order.status}</span>
+                                <span class="text-xs text-stone-500">${formatOrderTime(order.createdAt)}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <label class="sr-only" for="status-${order.id}">Order Status</label>
+                                <select
+                                    id="status-${order.id}"
+                                    onchange="updateOrderStatus('${order.id}', this.value)"
+                                    class="text-xs font-semibold bg-white border border-stone-300 rounded-lg px-2.5 py-1.5 text-stone-800 focus:outline-none focus:ring-2 focus:ring-farm-600"
+                                >
+                                    ${['Pending', 'Confirmed', 'Out for Delivery', 'Delivered', 'Cancelled'].map(st =>
+                                        `<option value="${st}" ${order.status === st ? 'selected' : ''}>${st}</option>`
+                                    ).join('')}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="p-4 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-5">
+                            <!-- Customer & Delivery Details -->
+                            <div class="lg:col-span-5 space-y-2 text-sm">
+                                <div>
+                                    <p class="font-bold text-stone-900">${order.customerName}</p>
+                                    <p class="text-xs font-semibold text-farm-700">${order.phone}</p>
+                                </div>
+                                <p class="text-xs text-stone-600 leading-relaxed">${order.address}</p>
+                                <div class="flex flex-wrap gap-1.5 pt-1 text-[11px]">
+                                    <span class="px-2 py-1 rounded-lg bg-stone-100 text-stone-700 font-medium">Slot: ${order.slot}</span>
+                                    <span class="px-2 py-1 rounded-lg bg-farm-50 text-farm-800 font-medium">${order.payment}</span>
+                                </div>
+                            </div>
+
+                            <!-- Ordered Items & Totals -->
+                            <div class="lg:col-span-7 flex flex-col justify-between">
+                                <ul class="bg-stone-50 rounded-xl p-3 border border-stone-100">
+                                    ${itemsHtml}
+                                </ul>
+                                <div class="mt-3 pt-2 flex flex-wrap items-center justify-between gap-3">
+                                    <div class="flex items-center gap-2">
+                                        <button
+                                            type="button"
+                                            onclick="copyOrderForRider('${order.id}')"
+                                            class="px-3 py-1.5 rounded-lg border border-stone-300 hover:bg-stone-100 text-xs font-semibold text-stone-700 transition-colors"
+                                        >
+                                            Copy Dispatch Note
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onclick="requestDeleteOrder('${order.id}')"
+                                            class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                                                isConfirmingDelete
+                                                    ? 'bg-red-600 text-white hover:bg-red-700'
+                                                    : 'border border-red-200 text-red-600 hover:bg-red-50'
+                                            }"
+                                        >
+                                            ${isConfirmingDelete ? 'Confirm Delete?' : 'Delete'}
+                                        </button>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-xs text-stone-500 mr-2">Delivery: ${order.deliveryFee === 0 ? 'FREE' : formatINR(order.deliveryFee)}</span>
+                                        <span class="text-lg font-extrabold text-farm-900">${formatINR(order.total)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderAdminInquiries() {
+            const listEl = document.getElementById('adminInquiriesList');
+            if (state.inquiries.length === 0) {
+                listEl.innerHTML = `<div class="col-span-full bg-white rounded-2xl border border-stone-200 p-10 text-center text-stone-500 text-sm">No B2B or piglet inquiries yet.</div>`;
+                return;
+            }
+
+            listEl.innerHTML = state.inquiries.map(inq => `
+                <div class="bg-white rounded-2xl border border-stone-200 p-5 shadow-xs flex flex-col justify-between gap-4">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-xs font-extrabold text-farm-700">${inq.refNo}</span>
+                            <span class="text-xs text-stone-400">${formatOrderTime(inq.createdAt)}</span>
+                        </div>
+                        <h4 class="text-base font-bold text-stone-900">${inq.name}</h4>
+                        <p class="text-xs font-semibold text-earth-600">${inq.phone}</p>
+                        <div class="flex flex-wrap gap-1.5 pt-1">
+                            <span class="px-2.5 py-1 rounded-lg bg-farm-50 text-farm-800 text-xs font-semibold">${inq.type}</span>
+                            ${inq.qty ? `<span class="px-2.5 py-1 rounded-lg bg-stone-100 text-stone-700 text-xs font-semibold">Qty: ${inq.qty}</span>` : ''}
+                        </div>
+                        <p class="text-xs text-stone-600 leading-relaxed pt-1">${inq.notes || 'No additional notes provided.'}</p>
+                    </div>
+                    <div class="pt-3 border-t border-stone-100 flex items-center justify-between gap-2">
+                        <span class="text-xs font-semibold text-stone-500">Lead Status:</span>
+                        <select
+                            onchange="updateInquiryStatus('${inq.refNo}', this.value)"
+                            class="text-xs font-bold bg-stone-50 border border-stone-300 rounded-lg px-2.5 py-1.5 text-stone-800"
+                        >
+                            ${['New', 'Contacted', 'Quoted', 'Closed'].map(st =>
+                                `<option value="${st}" ${inq.status === st ? 'selected' : ''}>${st}</option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderAdminStock() {
+            const listEl = document.getElementById('adminStockList');
+            listEl.innerHTML = PRODUCTS.map(product => {
+                const inStock = isProductInStock(product.id);
+                return `
+                    <div class="bg-white rounded-2xl border border-stone-200 p-4 flex items-center justify-between gap-3 shadow-xs">
+                        <div class="min-w-0">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-stone-400">${product.categoryLabel}</span>
+                            <h4 class="text-sm font-bold text-stone-900 truncate">${product.name}</h4>
+                            <p class="text-xs text-stone-500 mt-0.5">From ${formatINR(product.variants[0].price)}</p>
+                        </div>
+                        <button
+                            type="button"
+                            onclick="toggleProductStock('${product.id}')"
+                            class="shrink-0 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+                                inStock
+                                    ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200 border border-emerald-200'
+                                    : 'bg-red-100 text-red-700 hover:bg-red-200 border border-red-200'
+                            }"
+                        >
+                            ${inStock ? 'In Stock' : 'Sold Out'}
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderAdminDashboard() {
+            renderAdminKPIs();
+            updateSupabaseStatusUI();
+            if (state.adminTab === 'orders') renderAdminOrders();
+            if (state.adminTab === 'inquiries') renderAdminInquiries();
+            if (state.adminTab === 'stock') renderAdminStock();
+        }
+
+        window.updateOrderStatus = async function(orderId, newStatus) {
+            const order = state.orders.find(o => o.id === orderId);
+            if (!order) return;
+            const prevStatus = order.status;
+            order.status = newStatus;
+            saveOrdersToStorage();
+            renderAdminDashboard();
+
+            try {
+                await dbUpdateOrderStatus(orderId, newStatus);
+                showToast(`Order ${orderId} marked as ${newStatus}`);
+            } catch (err) {
+                order.status = prevStatus;
+                saveOrdersToStorage();
+                renderAdminDashboard();
+                showToast(`Supabase update failed: ${err.message}`);
+            }
+        };
+
+        window.requestDeleteOrder = async function(orderId) {
+            if (state.pendingDeleteOrderId === orderId) {
+                const backup = [...state.orders];
+                state.orders = state.orders.filter(o => o.id !== orderId);
+                state.pendingDeleteOrderId = null;
+                saveOrdersToStorage();
+                renderAdminDashboard();
+
+                try {
+                    await dbDeleteOrder(orderId);
+                    showToast(`Order ${orderId} deleted`);
+                } catch (err) {
+                    state.orders = backup;
+                    saveOrdersToStorage();
+                    renderAdminDashboard();
+                    showToast(`Could not delete in Supabase: ${err.message}`);
+                }
+            } else {
+                state.pendingDeleteOrderId = orderId;
+                renderAdminOrders();
+            }
+        };
+        window.updateInquiryStatus = async function(refNo, newStatus) {
+            const inq = state.inquiries.find(i => i.refNo === refNo);
+            if (!inq) return;
+            const prevStatus = inq.status;
+            inq.status = newStatus;
+            saveInquiriesToStorage();
+            renderAdminDashboard();
+
+            try {
+                await dbUpdateInquiryStatus(refNo, newStatus);
+                showToast(`Inquiry ${refNo} updated to ${newStatus}`);
+            } catch (err) {
+                inq.status = prevStatus;
+                saveInquiriesToStorage();
+                renderAdminDashboard();
+                showToast(`Supabase update failed: ${err.message}`);
+            }
+        };
+
+        window.toggleProductStock = async function(productId) {
+            const nextInStock = !isProductInStock(productId);
+            state.stockOverrides[productId] = nextInStock;
+            saveStockToStorage();
+            renderAdminStock();
+            renderProducts();
+
+            try {
+                await dbSetProductStock(productId, nextInStock);
+                showToast('Storefront stock status updated!');
+            } catch (err) {
+                state.stockOverrides[productId] = !nextInStock;
+                saveStockToStorage();
+                renderAdminStock();
+                renderProducts();
+                showToast(`Supabase stock sync failed: ${err.message}`);
+            }
+        };
+
+        window.updateInquiryStatus = function(refNo, newStatus) {
+            const inq = state.inquiries.find(i => i.refNo === refNo);
+            if (!inq) return;
+            inq.status = newStatus;
+            saveInquiriesToStorage();
+            renderAdminDashboard();
+            showToast(`Inquiry ${refNo} updated to ${newStatus}`);
+        };
+
+        window.toggleProductStock = function(productId) {
+            state.stockOverrides[productId] = !isProductInStock(productId);
+            saveStockToStorage();
+            renderAdminStock();
+            renderProducts();
+            showToast('Storefront stock status updated!');
+        };
+
+        function exportOrdersToCSV() {
+            try {
+                const headers = ['Order ID', 'Date', 'Status', 'Customer', 'Phone', 'Slot', 'Payment', 'Items', 'Total (INR)'];
+                const rows = state.orders.map(o => {
+                    const itemsJoined = o.items.map(i => `${i.quantity}x ${i.name} (${i.variant})`).join(' | ');
+                    return [
+                        o.id,
+                        formatOrderTime(o.createdAt),
+                        o.status,
+                        o.customerName,
+                        o.phone,
+                        o.slot,
+                        o.payment,
+                        itemsJoined,
+                        o.total
+                    ].map(val => `"${String(val).replace(/"/g, '""')}"`).join(',');
+                });
+                const csv = [headers.join(','), ...rows].join('\n');
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `divya-agro-orders-${new Date().toISOString().slice(0, 10)}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showToast('Orders CSV exported!');
+            } catch (err) {
+                showToast('Export failed in this browser environment.');
+            }
+        }
+
+        // =========================================================================
+        // 7. EVENT LISTENERS & FORM HANDLERS
+        // =========================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+            loadCartFromStorage();
+            renderProducts();
+            renderCart();
+            updateAdminBadges();
+
+            // Pre-fill Supabase form and auto-connect if credentials exist
+            const savedSb = getSavedSupabaseCredentials();
+            document.getElementById('supabaseUrlInput').value = savedSb.url;
+            document.getElementById('supabaseKeyInput').value = savedSb.key;
+            if (savedSb.url && savedSb.key) {
+                initSupabase(savedSb.url, savedSb.key, false);
+            } else {
+                updateSupabaseStatusUI();
+            }
+
+            // Admin Portal Listeners
+            document.getElementById('openAdminBtn').addEventListener('click', openAdminPortal);
+            document.getElementById('closeAdminPinBtn').addEventListener('click', closeAdminPinModal);
+            document.getElementById('adminPinBackdrop').addEventListener('click', closeAdminPinModal);
+            document.getElementById('closeAdminDashboardBtn').addEventListener('click', closeAdminDashboard);
+            document.getElementById('exportOrdersCsvBtn').addEventListener('click', exportOrdersToCSV);
+
+            // Manual Sync button in Admin header
+            document.getElementById('refreshAdminDataBtn').addEventListener('click', async () => {
+                if (state.supabaseConnected) {
+                    showToast('Syncing with Supabase...');
+                    await syncFromSupabase();
+                    showToast('Synced latest Supabase data!');
+                } else {
+                    renderAdminDashboard();
+                    showToast('Refreshed local demo data.');
+                }
+            });
+
+            // Supabase Configuration Form Submission
+            document.getElementById('supabaseConfigForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const url = document.getElementById('supabaseUrlInput').value.trim();
+                const key = document.getElementById('supabaseKeyInput').value.trim();
+                const btn = document.getElementById('saveSupabaseBtn');
+                btn.disabled = true;
+                btn.textContent = 'Connecting...';
+
+                try {
+                    localStorage.setItem('divya_agro_sb_url', url);
+                    localStorage.setItem('divya_agro_sb_key', key);
+                    await initSupabase(url, key, true);
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = 'Save & Connect';
+                }
+            });
+
+            // Disconnect Supabase and revert to local mode
+            document.getElementById('disconnectSupabaseBtn').addEventListener('click', () => {
+                try {
+                    localStorage.removeItem('divya_agro_sb_url');
+                    localStorage.removeItem('divya_agro_sb_key');
+                } catch (e) {}
+                if (supabaseClient && supabaseRealtimeChannel) {
+                    supabaseClient.removeChannel(supabaseRealtimeChannel);
+                }
+                supabaseClient = null;
+                state.supabaseConnected = false;
+                document.getElementById('supabaseUrlInput').value = '';
+                document.getElementById('supabaseKeyInput').value = '';
+                updateSupabaseStatusUI();
+                showSupabaseFeedback('Disconnected from Supabase. Switched back to Local Demo Mode.');
+                showToast('Switched to Local Demo Mode');
+            });
+
+            // Copy SQL Schema Script
+            document.getElementById('copySupabaseSqlBtn').addEventListener('click', () => {
+                try {
+                    const sqlText = document.getElementById('supabaseSqlCode').textContent;
+                    const buf = document.getElementById('adminCopyBuffer');
+                    buf.value = sqlText;
+                    buf.classList.remove('sr-only');
+                    buf.select();
+                    buf.setSelectionRange(0, 99999);
+                    document.execCommand('copy');
+                    buf.classList.add('sr-only');
+                    showToast('Supabase SQL script copied!');
+                } catch (err) {
+                    showToast('Could not copy SQL automatically.');
+                }
+            });
+
+            document.getElementById('adminPinForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const pin = document.getElementById('adminPinInput').value.trim();
+                if (pin === ADMIN_DEMO_PIN) {
+                    state.adminUnlocked = true;
+                    showAdminDashboard();
+                } else {
+                    document.getElementById('adminPinError').classList.remove('hidden');
+                }
+            });
+
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => switchAdminTab(btn.dataset.adminTab));
+            });
+
+            document.querySelectorAll('.admin-status-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.adminStatusFilter = btn.dataset.status;
+                    document.querySelectorAll('.admin-status-btn').forEach(b => {
+                        const active = b.dataset.status === state.adminStatusFilter;
+                        b.className = active
+                            ? 'admin-status-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-farm-700 text-white'
+                            : 'admin-status-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-stone-100 text-stone-700 hover:bg-stone-200';
+                    });
+                    renderAdminOrders();
+                });
+            });
+
+            document.getElementById('adminOrderSearchInput').addEventListener('input', (e) => {
+                state.adminSearchQuery = e.target.value;
+                renderAdminOrders();
+            });
+
+            // Category buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', () => filterByCategory(btn.dataset.category));
+            });
+
+            // Sort dropdown
+            document.getElementById('sortSelect').addEventListener('change', (e) => {
+                state.sortBy = e.target.value;
+                renderProducts();
+            });
+
+            // Search inputs (Desktop & Mobile synchronized)
+            const handleSearch = (val) => {
+                state.searchQuery = val;
+                document.getElementById('headerSearchInput').value = val;
+                document.getElementById('mobileSearchInput').value = val;
+                renderProducts();
+            };
+            document.getElementById('headerSearchInput').addEventListener('input', (e) => handleSearch(e.target.value));
+            document.getElementById('mobileSearchInput').addEventListener('input', (e) => handleSearch(e.target.value));
+            document.getElementById('clearSearchBtn').addEventListener('click', () => handleSearch(''));
+
+            // Cart & Checkout modal triggers
+            document.getElementById('openCartBtn').addEventListener('click', openCart);
+            document.getElementById('closeCartBtn').addEventListener('click', closeCart);
+            document.getElementById('cartBackdrop').addEventListener('click', closeCart);
+            document.getElementById('mobileMenuBtn').addEventListener('click', toggleMobileMenu);
+
+            document.getElementById('proceedCheckoutBtn').addEventListener('click', openCheckoutModal);
+            document.getElementById('closeCheckoutBtn').addEventListener('click', closeCheckoutModal);
+            document.getElementById('checkoutBackdrop').addEventListener('click', closeCheckoutModal);
+            document.getElementById('continueShoppingBtn').addEventListener('click', closeCheckoutModal);
+
+            // Checkout Form Submission
+            document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Placing Order...';
+                }
+
+                try {
+                    const custName = document.getElementById('custName').value.trim();
+                    const custPhone = document.getElementById('custPhone').value.trim();
+                    const custAddress = document.getElementById('custAddress').value.trim();
+                    const slot = document.getElementById('deliverySlot').value;
+                    const payment = document.getElementById('paymentMethod').value;
+                    const { subtotal, deliveryFee, total } = calculateCartTotals();
+
+                    const orderId = 'DAF-' + Math.floor(100000 + Math.random() * 900000);
+
+                    // Snapshot ordered items for the Admin Dashboard & Supabase
+                    const orderItems = state.cart.map(item => {
+                        const p = PRODUCTS.find(prod => prod.id === item.productId);
+                        const v = p.variants[item.variantIndex];
+                        return {
+                            name: p.name,
+                            variant: v.label,
+                            price: v.price,
+                            quantity: item.quantity
+                        };
+                    });
+
+                    const newOrder = {
+                        id: orderId,
+                        createdAt: new Date().toISOString(),
+                        customerName: custName,
+                        phone: custPhone,
+                        address: custAddress,
+                        slot: slot,
+                        payment: payment,
+                        status: 'Pending',
+                        items: orderItems,
+                        subtotal: subtotal,
+                        deliveryFee: deliveryFee,
+                        total: total
+                    };
+
+                    // Save to Supabase if connected (always also keep local cache updated)
+                    if (state.supabaseConnected) {
+                        await dbInsertOrder(newOrder);
+                    }
+
+                    state.orders.unshift(newOrder);
+                    saveOrdersToStorage();
+                    updateAdminBadges();
+
+                    // Build copyable order summary text
+                    const itemLines = orderItems.map(it =>
+                        `- ${it.name} (${it.variant}) x ${it.quantity} = ${formatINR(it.price * it.quantity)}`
+                    ).join('\n');
+
+                    const summaryText = `Divya Agro Farms Order Confirmation\nOrder ID: ${orderId}\nCustomer: ${custName} (${custPhone})\nAddress: ${custAddress}\nSlot: ${slot}\nPayment: ${payment}\nItems:\n${itemLines}\nTotal Payable: ${formatINR(total)}`;
+
+                    document.getElementById('orderCopyBuffer').value = summaryText;
+                    document.getElementById('confirmedOrderId').textContent = orderId;
+                    document.getElementById('confirmedCustName').textContent = custName;
+                    document.getElementById('confirmedSlot').textContent = slot;
+                    document.getElementById('confirmedPayment').textContent = payment;
+                    document.getElementById('confirmedTotal').textContent = formatINR(total);
+
+                    // Reset cart & switch modal view
+                    state.cart = [];
+                    saveCartToStorage();
+                    renderCart();
+                    e.target.reset();
+
+                    document.getElementById('checkoutForm').classList.add('hidden');
+                    document.getElementById('orderSuccessView').classList.remove('hidden');
+                } catch (err) {
+                    console.error('Checkout error:', err);
+                    showToast(`Order save failed: ${err.message || 'Please try again.'}`);
+                } finally {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Place Order Now';
+                    }
+                }
+            });
+
+            // Copy order summary using execCommand fallback for iframe compatibility
+            document.getElementById('copyOrderSummaryBtn').addEventListener('click', () => {
+                try {
+                    const buffer = document.getElementById('orderCopyBuffer');
+                    buffer.classList.remove('sr-only');
+                    buffer.select();
+                    buffer.setSelectionRange(0, 99999);
+                    document.execCommand('copy');
+                    buffer.classList.add('sr-only');
+                    showToast('Order summary copied to clipboard!');
+                } catch (err) {
+                    showToast('Could not copy automatically.');
+                }
+            });
+
+            // Bulk / B2B Inquiry Submission
+            document.getElementById('bulkInquiryForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('inqName').value.trim();
+                const phone = document.getElementById('inqPhone').value.trim();
+                const type = document.getElementById('inqType').value;
+                const qty = document.getElementById('inqQty').value.trim();
+                const notes = document.getElementById('inqNotes').value.trim();
+                const refNo = 'INQ-' + Math.floor(1000 + Math.random() * 9000);
+
+                const newInquiry = {
+                    refNo: refNo,
+                    createdAt: new Date().toISOString(),
+                    name: name,
+                    phone: phone,
+                    type: type,
+                    qty: qty,
+                    notes: notes,
+                    status: 'New'
+                };
+
+                try {
+                    if (state.supabaseConnected) {
+                        await dbInsertInquiry(newInquiry);
+                    }
+                    state.inquiries.unshift(newInquiry);
+                    saveInquiriesToStorage();
+
+                    document.getElementById('inquirySuccessText').textContent =
+                        `Thank you, ${name}! Your request for "${type}" (Ref: ${refNo}) has been logged. Our farm desk will call you shortly.`;
+                    document.getElementById('inquirySuccessBox').classList.remove('hidden');
+                    e.target.reset();
+                    showToast('Bulk inquiry submitted successfully!');
+                } catch (err) {
+                    console.error('Inquiry submit error:', err);
+                    showToast(`Could not save inquiry: ${err.message}`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
